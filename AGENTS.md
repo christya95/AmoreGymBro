@@ -1,6 +1,6 @@
 # AMORE GYM BRO — developer guide
 
-Visible brand: **AMORE GYM BRO**. Coach: **Proffessor Zeus**, spelled exactly that way.
+Visible brand: **AMORE GYM BRO**. Coach: **Professor Zeus**, spelled exactly that way.
 Read [.agents/skills/amore-gym-bro/SKILL.md](.agents/skills/amore-gym-bro/SKILL.md) for app work; this file owns project invariants.
 
 ## Repo map and references

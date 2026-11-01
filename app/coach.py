@@ -31,7 +31,7 @@ from app.plan_suggestions import PlanChange, SuggestionBlocked, load_catalog, pr
 logger = logging.getLogger("fitness_coach")
 
 DATA_TOOLS = {"recent_workouts", "exercise_history", "training_profile", "workout_details", "current_training_plan", "garmin_recovery"}
-COACH_NAME = "Proffessor Zeus"
+COACH_NAME = "Professor Zeus"
 RECENT_WORKOUT_CAP = 4
 HISTORY_MATCH_CAP = 3
 HISTORY_SESSION_CAP = 4
@@ -106,7 +106,7 @@ class CoachReply(BaseModel):
         description="At most four short facts copied from tool results. No number the tools did not return."
     )
     suggested_action: str = Field(
-        description="At most two short sentences in Proffessor Zeus's voice. Do not invent a load, volume, or personal record."
+        description="At most two short sentences in Professor Zeus's voice. Do not invent a load, volume, or personal record."
     )
     supporting_workout_ids: list[str] = Field(
         description="Workout ids copied from tool results. Use an empty list when none apply."

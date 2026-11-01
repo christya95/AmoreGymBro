@@ -194,8 +194,8 @@ def test_anonymous_cannot_save_a_goal(tmp_path):
 def test_coach_page_names_proffessor_zeus(tmp_path):
     client, _app = signed_in(tmp_path)
     page = client.get("/coach")
-    assert "Proffessor Zeus" in page.text
-    assert "Ask Proffessor Zeus" in page.text
+    assert "Professor Zeus" in page.text
+    assert "Ask Professor Zeus" in page.text
     assert "Amore Gym Bro" in page.text
 
 

@@ -2,7 +2,7 @@
 
 **Legend:** 🟢 Confirmed Hevy records · 🟣 Your reports · ⌚ Garmin estimates · ⚡ On-demand AI · ✅ Human-approved changes
 
-Training receipts, watch readings and goals—with **Proffessor Zeus**, your science-aware gym bro. ⚡
+Training receipts, watch readings and goals—with **Professor Zeus**, your science-aware gym bro. ⚡
 
 **Jump to:** [Use it](#use-it) · [Install](#install) · [Architecture](#architecture) · [AI, LangChain & RAG](#ai-langchain-and-rag) · [Database](#database) · [Hevy](#hevy) · [Garmin](#garmin) · [Development](#development)
 

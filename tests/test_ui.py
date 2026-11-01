@@ -144,7 +144,7 @@ def test_route_pass_retains_forms_and_escapes_latest_reply(tmp_path):
         assert 'class="brand-logo"' in response.text
     coach = client.get("/coach").text
     assert "&lt;script&gt;" in coach
-    assert coach.index('id="data-disclosure"') < coach.index("Ask Proffessor Zeus")
+    assert coach.index('id="data-disclosure"') < coach.index("Ask Professor Zeus")
     assert "ChatGPT subscription does not cover it" in coach
     assert "Configured model:" in coach
     assert '/workouts/w1' in coach
@@ -293,7 +293,7 @@ def test_zeus_collapsible_cards_keep_composer_and_plan_status(tmp_path, monkeypa
     assert page.panels_for(id="question") == ("zeus-chat",)
     assert page.panels_for(action="/coach") == ("zeus-chat",)
     assert page.panels_for(id="data-disclosure") == ("zeus-chat",)
-    assert html.index('id="data-disclosure"') < html.index("Ask Proffessor Zeus")
+    assert html.index('id="data-disclosure"') < html.index("Ask Professor Zeus")
     assert page.panels_for(href="/plan") == ("weekly-plan",)
     summary = html.split('id="weekly-plan"', 1)[1].split("</summary>", 1)[0]
     assert ("saved to Hevy" if published else "draft") in summary

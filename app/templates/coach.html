@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% from "icons.html" import icon %}
-{% block title %}Proffessor Zeus{% endblock %}
+{% block title %}Professor Zeus{% endblock %}
 {% block body_class %}coach-page{% endblock %}
 {% block body %}
   <header class="zeus-header">
     <span class="zeus-orb zeus-avatar" aria-hidden="true">{% include "zeus_avatar.html" %}</span>
     <div>
       <p class="eyebrow">In your corner</p>
-      <h1>Proffessor Zeus</h1>
+      <h1>Professor Zeus</h1>
       <p class="lead">Know the plan. Do the work.</p>
     </div>
   </header>
@@ -33,7 +33,7 @@
         <article class="zeus-bubble zeus-bubble-coach" aria-labelledby="latest-answer-title" data-reply-id="{{ reply.reply_id }}" data-reply-status="{{ reply.status }}">
           <div class="zeus-bubble-heading">
             <span class="zeus-orb zeus-avatar-small" aria-hidden="true">{% include "zeus_avatar.html" %}</span>
-            <div><p class="zeus-speaker">Proffessor Zeus</p><h3 id="latest-answer-title">Latest answer</h3></div>
+            <div><p class="zeus-speaker">Professor Zeus</p><h3 id="latest-answer-title">Latest answer</h3></div>
           </div>
           <p class="zeus-message-text" data-typewriter>{{ reply.message }}</p>
           {% if reply.suggested_action %}
@@ -103,7 +103,7 @@
         </article>
       {% else %}
         <div class="zeus-bubble zeus-bubble-coach zeus-welcome">
-          <p class="zeus-speaker">Proffessor Zeus</p>
+          <p class="zeus-speaker">Professor Zeus</p>
           <p class="zeus-welcome-title">What needs work, Big Dawg?</p>
           <p>Bring the question. We’ll turn it into a clear next step.</p>
           <p class="zeus-empty-note">No question yet. Start with the box below.</p>
@@ -137,7 +137,7 @@
         </ul>
         <p>The Hevy API key, the page password, and the cookie secret are not sent.</p>
       </details>
-      <button type="submit" class="zeus-ask">{{ icon('zeus') }}<span class="zeus-spinner" data-coach-spinner aria-hidden="true" hidden></span><span data-coach-button-label>Ask Proffessor Zeus</span></button>
+      <button type="submit" class="zeus-ask">{{ icon('zeus') }}<span class="zeus-spinner" data-coach-spinner aria-hidden="true" hidden></span><span data-coach-button-label>Ask Professor Zeus</span></button>
       <p class="zeus-submit-status" role="status" aria-live="polite" data-coach-status></p>
     </form>
     </div>

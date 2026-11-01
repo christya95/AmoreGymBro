@@ -1,6 +1,6 @@
 ---
 name: amore-gym-bro
-description: Work on AmoreGymBro's Hevy synchronization, Bevel-inspired phone UI, Proffessor Zeus, macros, research or routine proposals. Applies to this fitness companion, not unrelated apps.
+description: Work on AmoreGymBro's Hevy synchronization, Bevel-inspired phone UI, Professor Zeus, macros, research or routine proposals. Applies to this fitness companion, not unrelated apps.
 ---
 
 # AmoreGymBro
