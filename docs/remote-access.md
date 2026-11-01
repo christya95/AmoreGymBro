@@ -2,7 +2,7 @@
 
 Tailscale connects your signed-in iPhone to the NAS app. **Serve** provides private HTTPS; **Funnel must remain disabled**. Keep the app password enabled. No router forwarding, NAS administration access, Mac or SSH tunnel is needed for normal use.
 
-**Verified 1 November 2026:** private HTTPS, required app login, protected NAS/database ports, and app/helper recreation with the same Tailscale identity. The iPhone cellular check is pending. Device key expiry remains at the account's six-month default; reauthorize before expiry. Existing tailnet access rules are unchanged.
+**Verified 1 November 2026:** private HTTPS, required app login, protected NAS/database ports, and app/helper recreation with the same Tailscale identity. The user confirmed successful sign-in and Home page access on iPhone cellular with Wi-Fi off and Tailscale connected. Device key expiry remains at the account's six-month default; reauthorize before expiry. Existing tailnet access rules are unchanged.
 
 ## Setup
 
