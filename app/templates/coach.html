@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% from "icons.html" import icon %}
+{% block title %}Proffessor Zeus{% endblock %}
+{% block body_class %}coach-page{% endblock %}
+{% block body %}
+  <header class="zeus-header">
+    <span class="zeus-orb zeus-avatar" aria-hidden="true">{{ icon('zeus') }}</span>
+    <div>
+      <p class="eyebrow">In your corner</p>
+      <h1>Proffessor Zeus</h1>
+      <p class="lead">A little science. A little gym bro.</p>
+    </div>
+  </header>
+  {% if flash %}
+    <p class="banner" role="status">{{ flash }}</p>
+  {% endif %}
+
+  <details class="card zeus-chat zeus-details" id="zeus-chat" open>
+    <summary class="zeus-chat-heading">
+      <h2 id="conversation-title">Let’s talk training</h2>
+      <span class="zeus-on-demand">On demand</span>
+    </summary>
+    <div class="zeus-details-body">
+    <div class="zeus-messages">
+      {% if reply and reply.status != 'plan_draft' %}
+        <p class="zeus-exchange-note">Your latest question and answer</p>
+        <article class="zeus-bubble zeus-bubble-user" aria-label="Your latest question">
+          <p class="zeus-speaker">You asked</p>
+          <p class="zeus-message-text">{{ reply.question }}</p>
+        </article>
+        <article class="zeus-bubble zeus-bubble-coach" aria-labelledby="latest-answer-title">
+          <div class="zeus-bubble-heading">
+            <span class="zeus-orb zeus-avatar-small" aria-hidden="true">{{ icon('zeus') }}</span>
+            <div><p class="zeus-speaker">Proffessor Zeus</p><h3 id="latest-answer-title">Latest answer</h3></div>
+          </div>
+          <p class="zeus-message-text">{{ reply.message }}</p>
+          {% if reply.suggested_action %}
+            <div class="zeus-next-step">
+              <h3>Suggested action</h3>
+              <p class="zeus-message-text">{{ reply.suggested_action }}</p>
+            </div>
+          {% endif %}
+          {% if reply.plan_suggestion %}
+            <section class="zeus-next-step" aria-label="Proposed plan changes">
+              <h3>Proposed plan changes</h3>
+              <p class="meta">{% if reply.plan_suggestion.state == "proposed" %}Trial targets. Your plan stays unchanged until you approve.{% else %}Previously proposed trial targets.{% endif %}</p>
+              {% for change in reply.plan_suggestion.changes %}
+                <h4>{{ change.day }}</h4>
+                <p><strong>Current:</strong> {{ change.before }}</p>
+                <p><strong>Proposed:</strong> {{ change.after }}</p>
+                <p class="meta">{{ change.reason }}</p>
+              {% endfor %}
+              {% if reply.plan_suggestion.state == 'proposed' %}
+              <form class="plan-choice-actions" method="post" action="/coach/plan/{{ reply.plan_suggestion.suggestion_id }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <button type="submit" name="decision" value="apply">Update my plan</button>
+                <button type="submit" class="secondary" name="decision" value="dismiss">Keep current plan</button>
+              </form>
+              <p class="meta">Updates this app only. Saving to Hevy is a separate review.</p>
+              {% elif reply.plan_suggestion.state == 'applied' %}
+              <p class="banner">Plan updated in this app. <a href="/plan">Review your plan</a> before saving changes to Hevy.</p>
+              {% elif reply.plan_suggestion.state == 'dismissed' %}
+              <p class="meta">You kept your current plan.</p>
+              {% else %}
+              <p class="meta">This suggestion is no longer current. Ask Zeus again.</p>
+              {% endif %}
+            </section>
+          {% endif %}
+          {% if reply.proposal_notice %}<p class="notice">{{ reply.proposal_notice }}</p>{% endif %}
+          {% if reply.observed_facts %}
+            <h3>From your saved data</h3>
+            <ul class="zeus-reply-list">
+              {% for fact in reply.observed_facts %}<li>{{ fact }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+          {% if reply.missing_information %}
+            <h3>Missing</h3>
+            <ul class="zeus-reply-list">
+              {% for item in reply.missing_information %}<li>{{ item }}</li>{% endfor %}
+            </ul>
+          {% endif %}
+          {% if reply.uncertainty %}
+            <p class="notice zeus-uncertainty">{{ reply.uncertainty }}</p>
+          {% endif %}
+          {% if reply.supporting_workout_ids %}
+            <div class="zeus-workout-links">
+              {% for workout_id in reply.supporting_workout_ids %}
+                <a href="/workouts/{{ workout_id | urlencode }}">{{ icon('dumbbell') }}<span>Confirmed workout{% if reply.supporting_workout_ids | length > 1 %} {{ loop.index }}{% endif %}</span>{{ icon('arrow') }}</a>
+              {% endfor %}
+            </div>
+          {% endif %}
+          {% if reply.research_sources %}
+            <details class="disclosure">
+              <summary>Research provided for this routine</summary>
+              <p class="meta">Selected references, checked online and cached for up to a day. Not a comprehensive literature search.</p>
+              <ul class="runs">{% for source in reply.research_sources %}
+                <li><a href="{{ source.url }}" target="_blank" rel="noopener noreferrer">{{ source.title }}</a><br>{{ source.scope }}<br>Checked <time datetime="{{ source.checked_at }}">{{ source.checked_at }}</time></li>
+              {% endfor %}</ul>
+            </details>
+          {% endif %}
+        </article>
+      {% else %}
+        <div class="zeus-bubble zeus-bubble-coach zeus-welcome">
+          <p class="zeus-speaker">Proffessor Zeus</p>
+          <p class="zeus-welcome-title">Big Dawg, what’s the situation? ⚡</p>
+          <p>We’re chasing PRs, not your ex. Drop the question before a baddie asks to work in and you forget how to count. 💪</p>
+          <p class="zeus-empty-note">No question yet. Start with the box below.</p>
+        </div>
+      {% endif %}
+    </div>
+
+    <form class="zeus-composer" method="post" action="/coach" data-coach-form>
+      <label for="question">Your question</label>
+      <p id="question-hint" class="meta">Ask about a saved workout, your progress, or your daily macros.</p>
+      <textarea id="question" name="question" rows="5" maxlength="1000" required aria-describedby="question-hint question-limit" placeholder="e.g. Zeus, leg day humbled me. What should I focus on next?"></textarea>
+      <p id="question-limit" class="zeus-input-note">Up to 1,000 characters · Sent only when you ask</p>
+
+      {% if not model_configured %}
+        <div class="zeus-model-needed" role="note">
+          <h3>Model key needed</h3>
+          <p>{{ missing_key }}</p>
+        </div>
+      {% else %}
+        <p class="zeus-cost-note">Uses the OpenAI API, billed separately from a ChatGPT subscription.</p>
+      {% endif %}
+      <details class="zeus-disclosure" id="data-disclosure">
+        <summary>Before you send: cloud model &amp; shared data</summary>
+        {% if model_configured %}
+          <h3>Configured cloud model</h3>
+          <p>Configured model: <code>{{ model_name }}</code>. Requests use 1Password credentials supplied at launch. OpenAI API usage has its own billing; a ChatGPT subscription does not cover it.</p>
+        {% endif %}
+        <h3>What a question can send</h3>
+        <ul class="runs">
+          {% for item in context_sent %}<li>{{ item }}</li>{% endfor %}
+        </ul>
+        <p>The Hevy API key, the page password, and the cookie secret are not sent.</p>
+      </details>
+      <button type="submit" class="zeus-ask">{{ icon('zeus') }}<span data-coach-button-label>Ask Proffessor Zeus</span></button>
+      <p class="zeus-submit-status" role="status" aria-live="polite" data-coach-status></p>
+    </form>
+    </div>
+  </details>
+
+  {% if training_plan %}
+  <details class="card weekly-plan-link zeus-details" id="weekly-plan">
+    <summary><span><span class="pill report-pill">Your weekly plan · {% if publication.complete %}saved to Hevy{% else %}draft{% endif %}</span><span class="title">{{ training_plan.weekly_plan.name }}</span></span></summary>
+    <div class="zeus-details-body">
+    <p class="meta">Exercises, sets, reps and trial loads. {% if publication.complete %}Saved in Hevy’s AMORE GYM BRO folder.{% else %}Saved in this app; not in Hevy.{% endif %}</p>
+    <a class="button" href="/plan">View my weekly plan {{ icon('arrow') }}</a>
+    <p class="meta">Zeus lists proposed changes in chat. You choose whether to update your plan.</p>
+    </div>
+  </details>
+  {% endif %}
+  {% if not training_plan %}
+  <details class="card zeus-details" id="routine">
+    <summary><span>Draft a weekly outline<small>{% if routine_missing %}Complete your checklist first{% else %}Your checklist is ready{% endif %}</small></span></summary>
+    <div class="zeus-details-body">
+      <p class="meta">A short outline with source links. It does not automatically edit your saved weekly plan or create Hevy routines.</p>
+      {% if routine_missing %}
+        <p>Still needed before a routine: {{ routine_missing | join(", ") }}.</p>
+        <p class="meta">Add those on <a href="/goals">Goals</a>. The model is not called while anything on that list is missing.</p>
+      {% else %}
+        <p>Your checklist is complete. Draft an outline to review here.</p>
+      {% endif %}
+      <details class="disclosure">
+        <summary>Before drafting: data, research &amp; cost</summary>
+        <p class="meta">One billed OpenAI API request uses your saved goal, body details, schedule and a summary of confirmed workouts.</p>
+        <p class="meta">Selected PubMed references are checked first and cached for up to a day. Only public article IDs go to PubMed; your personal details do not. Unavailable or invalid references stop drafting before the model is called.</p>
+      </details>
+      <form method="post" action="/coach/routine" data-coach-form data-button-label="Draft a weekly outline">
+        <button type="submit"><span data-coach-button-label>Draft a weekly outline</span></button>
+        <p role="status" aria-live="polite" data-coach-status></p>
+      </form>
+    </div>
+  </details>
+  {% endif %}
+{% endblock %}
+{% block scripts %}<script src="/static/profile-details.js" defer></script><script src="/static/coach-ui.js?v=zeus-chat-1" defer></script>{% endblock %}

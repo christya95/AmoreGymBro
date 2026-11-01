@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block title %}Goals & profile{% endblock %}
+{% block body %}
+  {% set activity_labels = {'sedentary': 'Sedentary · mostly sitting', 'light': 'Light · some walking or light exercise', 'moderate': 'Moderate · regular movement and exercise', 'high': 'High · very active work or frequent hard exercise'} %}
+  {% set missing_labels = {'activity': 'activity level', 'current weight': 'saved Hevy weight', 'sex': 'sex used for the formula'} %}
+  {% set missing_fields = {'height': 'height_in', 'age': 'age_years', 'sex': 'sex', 'activity': 'activity', 'current weight': 'hevy-measurements'} %}
+  <header>
+    <p class="eyebrow">Training goals</p>
+    <h1>Goals &amp; profile</h1><p class="lead">Save your goal and details for daily estimates and training guidance.</p>
+  </header>
+  <nav class="profile-jump-links" aria-label="On this page">
+    <a href="#saved-goals">Your goal</a>
+    <a href="#saved-profile">Saved profile</a>
+    <a href="#daily-macros">Daily macros</a>
+  </nav>
+  <p class="notice">Body and training details are your report. Saved Hevy measurements and workouts stay separate.</p>
+  {% if flash %}
+    <p class="banner" role="status">{{ flash }}</p>
+  {% endif %}
+  <section id="saved-goals" aria-label="Your saved goals">
+  {% if goals %}
+    {% for goal in goals %}
+      <section class="card">
+        <p class="pill report-pill">Saved goal</p><h2 class="saved-text">{{ goal.statement }}</h2>
+        <p class="meta">Saved <time datetime="{{ goal.created_at }}">{{ goal.created_at }}</time></p>
+        <form method="post" action="/goals/{{ goal.id }}/delete">
+          <button class="quiet" type="submit">Remove</button>
+        </form>
+      </section>
+    {% endfor %}
+  {% else %}
+    <section class="card">
+      <h2>No goals yet</h2>
+      <p>Your goals are saved privately in the app. Saving one does not create a Hevy routine.</p>
+    </section>
+  {% endif %}
+  <details class="card profile-details" {% if not goals %}open{% endif %}>
+    <summary>Add a goal</summary>
+    <div class="details-body">
+  <form method="post" action="/goals">
+    <p class="pill report-pill">{{ report }}</p>
+    <label for="statement">What are you training for?</label>
+    <textarea id="statement" name="statement" maxlength="400" required placeholder="What would progress look like for you?"></textarea>
+    <button type="submit">Save goal</button>
+  </form>
+    </div>
+  </details>
+  </section>
+  <section class="card" id="hevy-measurements">
+    <p class="pill">Saved Hevy measurements</p>
+    <h2>Body measurements</h2>
+    {% if measurement %}
+      <p class="meta">Latest saved measurement <time datetime="{{ measurement.date }}" data-date-only>{{ measurement.date }}</time>. Height comes from your body details below.</p>
+      <dl class="times">
+        {% for label, value in measurement_lines %}
+          <div>
+            <dt>{{ label }}</dt>
+            <dd>{{ value }}</dd>
+          </div>
+        {% endfor %}
+      </dl>
+    {% else %}
+      <p>No saved Hevy measurement yet. <a href="/#sync-details">Sync from the overview</a>.</p>
+    {% endif %}
+  </section>
+  <section class="card daily-macros" id="daily-macros" aria-labelledby="daily-macros-title">
+    <p class="pill estimate-pill">Estimated daily guide</p>
+    <h2 id="daily-macros-title">Your daily calories &amp; macros</h2>
+    <p class="meta">Calculated from saved weight and your reported details; not measured energy needs or food intake. Save your profile to recalculate, with no AI charge.</p>
+    {% if guide.complete %}
+      <dl class="daily-macro-grid">
+        {% for label, value, unit in [('Calories', guide.calories, 'kcal/day'), ('Protein', guide.protein_g, 'g/day'), ('Carbs', guide.carb_g, 'g/day'), ('Fat', guide.fat_g, 'g/day')] %}
+          <div class="daily-macro-tile"><dt>{{ label }}</dt><dd><strong>{{ value }}</strong><span>{{ unit }}</span></dd></div>
+        {% endfor %}
+      </dl>
+      <p class="meta">To update these estimates, <a href="#body-details">Edit body &amp; training</a>, then save.</p>
+    {% else %}
+      <p class="macro-waiting" role="status">Waiting for {% for item in guide.missing %}{{ missing_labels.get(item, item) }}{{ ', ' if not loop.last else '' }}{% endfor %}</p>
+      <div class="daily-macro-grid" role="list" aria-label="Daily targets awaiting your missing details">
+        {% for label, unit in [('Calories', 'kcal/day'), ('Protein', 'g/day'), ('Carbs', 'g/day'), ('Fat', 'g/day')] %}
+          <div class="daily-macro-tile macro-pending" role="listitem"><span class="macro-label">{{ label }}</span><strong aria-label="Not calculated">—</strong><span class="macro-unit">{{ unit }}</span></div>
+        {% endfor %}
+      </div>
+      <p class="meta">Still needed before a number is shown: {{ guide.missing | join(", ") }}.</p>
+      {% if guide.missing == ['activity'] %}
+        <a class="button profile-complete" href="#activity">Choose activity level</a>
+        <p class="meta">Choose your usual activity below, then press <strong>Save body details</strong>. Your daily targets will appear here.</p>
+      {% elif 'current weight' in guide.missing %}
+        <a class="button profile-complete" href="/#sync-details">Sync saved Hevy weight</a>
+        <p class="meta">Sync a weight already saved in Hevy. Complete any other missing fields below, then press <strong>Save body details</strong>.</p>
+      {% else %}
+        <a class="button profile-complete" href="#{{ missing_fields.get(guide.missing[0], 'body-details') if guide.missing else 'body-details' }}">Complete your profile</a>
+        <p class="meta">Fill in the missing details below, then press <strong>Save body details</strong> to update this guide.</p>
+      {% endif %}
+    {% endif %}
+    <details class="disclosure">
+      <summary>How this estimate works</summary>
+      <p class="meta">Daily starting targets for the guide’s {{ guide.target_lb }} lb target, not a food log.</p>
+      <p class="meta">Estimated daily maintenance (TDEE) uses Mifflin-St Jeor with your reported activity. The calorie guide subtracts 300 kcal/day. Protein uses 2 g per kg of saved weight; fat uses 0.8 g per kg, with the remaining calories allocated to carbs.</p>
+      <p class="meta">Changing a saved goal does not change this guide’s target.</p>
+      <p class="meta">{{ guide.note }}</p>
+    </details>
+  </section>
+  <section class="card saved-profile" id="saved-profile" aria-labelledby="saved-profile-title">
+    <p class="pill report-pill">{{ report }}</p>
+    <h2 id="saved-profile-title">Your saved profile</h2>
+    <p class="meta">Your saved details for macro estimates and a routine that fits your schedule.</p>
+    {% if entry.updated_at %}
+      <p class="profile-saved-at">Last saved <time datetime="{{ entry.updated_at }}">{{ entry.updated_at }}</time></p>
+    {% else %}
+      <p class="profile-saved-at">No profile saved yet. Add your details in the edit panel below.</p>
+    {% endif %}
+    <dl class="saved-profile-grid">
+      <div><dt>Height</dt><dd>{% if entry.height_cm %}{{ '%g'|format(entry.height_cm) }} cm <span>/ {{ '%.1f'|format(entry.height_cm / 2.54) }} in</span>{% else %}Not set{% endif %}</dd></div>
+      <div><dt>Age</dt><dd>{{ entry.age_years if entry.age_years else 'Not set' }}{% if entry.age_years %} years{% endif %}</dd></div>
+      <div><dt>Sex used for formula</dt><dd>{{ {'female': 'Female', 'male': 'Male'}.get(entry.sex, 'Not set') }}</dd></div>
+      <div><dt>Activity level</dt><dd>{{ activity_labels.get(entry.activity, 'Not set') }}</dd></div>
+      <div><dt>Training days</dt><dd>{% if entry.days_per_week %}{{ entry.days_per_week }} per week{% else %}Not set{% endif %}</dd></div>
+      <div><dt>Session length</dt><dd>{% if entry.session_minutes %}{{ entry.session_minutes }} minutes{% else %}Not set{% endif %}</dd></div>
+      <div><dt>Training location</dt><dd>{{ {'gym': 'Gym', 'home': 'Home'}.get(entry.train_where, 'Not set') }}</dd></div>
+    </dl>
+    <p class="meta">See <a href="/history">History for completed workouts</a> or <a href="/coach">Zeus for training guidance</a>.</p>
+    <a class="profile-edit-link" href="#body-details">Edit body &amp; training ↓</a>
+  </section>
+  <details class="card profile-details" id="body-details" {% if not guide.complete %}open{% endif %}>
+    <summary><span>Edit body &amp; training<small>Change a detail, then press Save body details</small></span></summary>
+    <div class="details-body">
+    <p class="pill report-pill">{{ report }}</p>
+    <p class="meta">Height, age, sex and activity are needed for the macro estimate. Days, session length and training location are also needed for a routine. Blank fields stay unset.</p>
+    {% if entry.updated_at %}<p class="meta">Last saved <time datetime="{{ entry.updated_at }}">{{ entry.updated_at }}</time></p>{% endif %}
+    <form method="post" action="/goals/body">
+      <div class="form-grid">
+      <div class="field">
+      <label for="height_in">Height in inches</label>
+      <input placeholder="Not set" id="height_in" name="height_in" inputmode="decimal" value="{% if entry.height_cm %}{{ '%.1f'|format(entry.height_cm / 2.54) }}{% endif %}">
+      </div>
+      <div class="field">
+      <label for="age_years">Age</label>
+      <input placeholder="Not set" id="age_years" name="age_years" inputmode="numeric" value="{{ entry.age_years or '' }}">
+      </div>
+      <div class="field">
+      <label for="sex">Sex used for estimate</label>
+      <select id="sex" name="sex">
+        <option value="">Not set</option>
+        <option value="female" {% if entry.sex == 'female' %}selected{% endif %}>Female</option>
+        <option value="male" {% if entry.sex == 'male' %}selected{% endif %}>Male</option>
+      </select>
+      </div>
+      <div class="field">
+      <label for="activity">Usual activity level</label>
+      <select id="activity" name="activity" aria-describedby="activity-help">
+        <option value="">Not set</option>
+        {% for name in activities %}
+          <option value="{{ name }}" {% if entry.activity == name %}selected{% endif %}>{{ activity_labels.get(name, name) }}</option>
+        {% endfor %}
+      </select>
+      <p class="meta field-help" id="activity-help">Choose your usual activity across a normal week: work, walking and exercise. Training days alone do not determine activity level.</p>
+      </div>
+      <div class="field">
+      <label for="days_per_week">Days per week</label>
+      <input placeholder="Not set" id="days_per_week" name="days_per_week" inputmode="numeric" value="{{ entry.days_per_week or '' }}">
+      </div>
+      <div class="field">
+      <label for="session_minutes">Minutes per session</label>
+      <input placeholder="Not set" id="session_minutes" name="session_minutes" inputmode="numeric" value="{{ entry.session_minutes or '' }}">
+      </div>
+      <div class="field">
+      <label for="train_where">Where you train</label>
+      <select id="train_where" name="train_where">
+        <option value="">Not set</option>
+        <option value="gym" {% if entry.train_where == 'gym' %}selected{% endif %}>Gym</option>
+        <option value="home" {% if entry.train_where == 'home' %}selected{% endif %}>Home</option>
+      </select>
+      </div>
+      </div>
+      <button type="submit">Save body details</button>
+    </form>
+    </div>
+  </details>
+{% endblock %}
+{% block scripts %}<script src="/static/profile-details.js" defer></script>{% endblock %}

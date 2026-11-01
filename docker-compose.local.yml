@@ -1,0 +1,6 @@
+# Mac development only. MongoDB remains reachable only from this Mac.
+# Use: docker compose -f docker-compose.yml -f docker-compose.local.yml up -d mongodb
+services:
+  mongodb:
+    ports:
+      - "127.0.0.1:27018:27017"

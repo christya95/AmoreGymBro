@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% from "icons.html" import icon %}
+{% block title %}{{ plan.name }} · AMORE GYM BRO{% endblock %}
+{% block body %}
+<header>
+  <p class="eyebrow">Your weekly training plan</p>
+  <h1>{{ plan.name }}</h1>
+  <p class="lead">{{ plan.phase }}</p>
+</header>
+{% if flash %}<p class="banner" role="status">{{ flash }}</p>{% endif %}
+<p class="pill report-pill">{% if publication.complete %}Saved to Hevy{% else %}Proposed plan · not in Hevy{% endif %} · version {{ saved.plan_version }}</p>
+{% if publication.complete %}<p class="banner">Your {{ publication.routines | length }} daily routines are verified in Hevy’s {{ publication.folder }} folder.</p>{% endif %}
+<div class="plan-actions">
+  <a class="button secondary" href="/plan/hevy">Save changes to Hevy</a>
+</div>
+<p class="meta">Review and approve before saving to Hevy.</p>
+<p class="notice">{{ plan.goal }}</p>
+<p class="meta">Saved <time datetime="{{ saved.created_at }}">{{ saved.created_at }}</time>. These are proposed targets, not completed workouts or measured current capacity.</p>
+<nav class="plan-days" aria-label="Training days">{% for day in plan.days %}<a href="#day-{{ loop.index }}">{{ day.day[:3] }}</a>{% endfor %}</nav>
+<section class="card">
+  <h2>Start here</h2>
+  <p>{{ plan.rules[1] if plan.rules | length > 1 else plan.rules[0] }}</p>
+  {% if plan.rules | length > 2 %}<p class="meta">{{ plan.rules[2] }}</p>{% endif %}
+  <details class="disclosure"><summary>Warm-up, progression &amp; recovery</summary><ul class="runs">{% for rule in plan.rules %}<li>{{ rule }}</li>{% endfor %}</ul></details>
+  <details class="disclosure"><summary>Your planning information</summary><ul class="runs">{% for item in plan.intake %}<li>{{ item }}</li>{% endfor %}</ul></details>
+</section>
+{% for day in plan.days %}
+<details class="card plan-day" id="day-{{ loop.index }}" {% if day.day == 'Monday' %}open{% endif %}>
+  <summary><h2><span class="eyebrow">{{ day.day }} · {{ day.focus }}</span>{{ day.name }}</h2></summary>
+  <div class="details-body">
+  {% for exercise in day.exercises %}
+  <article class="plan-exercise">
+    <h3>{{ exercise.name }}</h3>
+    <p class="plan-prescription">{% if exercise.duration_minutes %}{{ exercise.duration_minutes }} minutes{% else %}{{ exercise.sets }} working set{{ 's' if exercise.sets != 1 else '' }} × {{ exercise.reps_min }}{% if exercise.reps_max != exercise.reps_min %}–{{ exercise.reps_max }}{% endif %} reps{% endif %}</p>
+    <p>{% if exercise.load_display %}<strong>Trial load: {{ exercise.load_display }}</strong>{% if exercise.load_basis == 'per_dumbbell' %} per dumbbell{% elif exercise.load_basis == 'per_arm' %} per arm{% else %} on the same machine{% endif %}{% elif exercise.load_basis == 'bodyweight' %}<strong>Bodyweight</strong>{% else %}<strong>Easy conversational pace</strong>{% endif %}</p>
+    <p class="meta">{{ exercise.note }}</p>
+    {% if exercise.rest_seconds %}<p class="meta">Rest {{ exercise.rest_seconds }} seconds between working sets.</p>{% endif %}
+    {% if exercise.reference %}<details class="disclosure"><summary>Why this starting point?</summary><p class="meta">{{ exercise.reference }}</p></details>{% endif %}
+  </article>
+  {% endfor %}
+  </div>
+</details>
+{% endfor %}
+<section class="card plan-swap" aria-labelledby="swap-title">
+  <h2 id="swap-title">Need a swap?</h2>
+  <p class="meta">Tell Zeus the day, exercise, available equipment and reason for a swap.</p>
+  <a class="button" href="/coach#question">Ask Zeus for a swap {{ icon('arrow') }}</a>
+  <p class="meta">Review Zeus’s suggested changes in chat. Update your plan only if you approve.</p>
+  <details class="disclosure"><summary>Research behind this proposal</summary><ul class="runs">{% for source in plan.sources %}<li><a href="{{ source.url }}" target="_blank" rel="noopener noreferrer">{{ source.title }}</a></li>{% endfor %}</ul><p class="meta">The sources support gradual, consistent training. This exact schedule, rep ranges and trial loads are individual programming proposals, not numbers prescribed by those studies.</p></details>
+</section>
+{% endblock %}
+{% block scripts %}<script src="/static/profile-details.js" defer></script>{% endblock %}

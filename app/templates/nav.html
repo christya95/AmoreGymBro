@@ -1,0 +1,8 @@
+{% from "icons.html" import icon %}
+<nav class="tabs" aria-label="Sections">
+  {% for href, label, name in [('/', 'Home', 'home'), ('/history', 'History', 'history'), ('/goals', 'Goals', 'goals'), ('/check-ins', 'Check-ins', 'check'), ('/coach', 'Zeus', 'zeus')] %}
+    {% set active = (request.url.path in ['/', '/garmin', '/hevy/routines'] or request.url.path.startswith('/workouts/')) if href == '/' else request.url.path.startswith(href) %}
+    {% if href == '/coach' and request.url.path == '/plan' %}{% set active = true %}{% endif %}
+    <a href="{{ href }}" {% if active %}class="active" aria-current="page"{% endif %}>{{ icon(name) }}<span>{{ label }}</span></a>
+  {% endfor %}
+</nav>

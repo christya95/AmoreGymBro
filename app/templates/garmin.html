@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% from "icons.html" import icon %}
+{% block title %}Garmin details · AMORE GYM BRO{% endblock %}
+{% block body %}
+<header><p class="eyebrow">From Garmin Connect</p><h1>Your watch, in detail</h1><p class="lead">Daily activity, recovery, sleep and breathing estimates.</p></header>
+{% if flash %}<p class="banner" role="status">{{ flash }}</p>{% endif %}
+<section class="card" aria-labelledby="garmin-connection-title">
+  <div class="section-head"><h2 id="garmin-connection-title">Garmin connection</h2><span class="pill report-pill">Watch estimates</span></div>
+  <p class="meta">{% if garmin.state.last_success_at %}Last synced <time datetime="{{ garmin.state.last_success_at }}">{{ garmin.state.last_success_at }}</time>.{% else %}No successful sync yet.{% endif %}</p>
+  {% if garmin.state.last_error %}<p class="banner warn" role="status">{{ garmin.state.last_error }}</p>{% endif %}
+  {% if not garmin_configured %}<p class="notice">The Garmin connection needs its key from 1Password. Previously saved readings stay available.</p>{% endif %}
+  <form method="post" action="/garmin/sync" data-garmin-sync-form>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="return_to" value="garmin">
+    <button type="submit" {% if not garmin_configured %}disabled{% endif %}>{{ icon('refresh') }} <span data-garmin-sync-label>Sync Garmin now</span></button>
+    <p class="garmin-sync-progress meta" role="status" aria-live="polite" data-garmin-sync-status></p>
+  </form>
+  <p class="meta">Sync your watch in Garmin Connect first. This button copies its saved readings to this app.</p>
+  <details class="disclosure"><summary>Connection details</summary>
+    <dl class="times">
+      <div><dt>Last attempt</dt><dd>{% if garmin.state.last_attempt_at %}<time datetime="{{ garmin.state.last_attempt_at }}">{{ garmin.state.last_attempt_at }}</time>{% else %}Not yet{% endif %}</dd></div>
+      <div><dt>Last successful sync</dt><dd>{% if garmin.state.last_success_at %}<time datetime="{{ garmin.state.last_success_at }}">{{ garmin.state.last_success_at }}</time>{% else %}Not yet{% endif %}</dd></div>
+      <div><dt>Automatic sync</dt><dd>{% if garmin_auto_sync and garmin_configured %}About every {{ '%g' | format(garmin_interval_hours) }} hours{% else %}Off on this instance{% endif %}</dd></div>
+      {% if garmin.state.start_date and garmin.state.end_date %}<div><dt>Last checked period</dt><dd><time datetime="{{ garmin.state.start_date }}">{{ garmin.state.start_date }}</time> – <time datetime="{{ garmin.state.end_date }}">{{ garmin.state.end_date }}</time></dd></div>{% endif %}
+    </dl>
+    <p class="meta">The NAS checks the latest seven days. Syncing uses no AI tokens and does not write to Garmin or Hevy.</p>
+  </details>
+</section>
+<div class="section-head"><h2>Recent daily readings</h2><span class="subtle-label">{{ garmin.days | length }} saved day{{ '' if garmin.days | length == 1 else 's' }}</span></div>
+<p class="meta">Today’s readings may change; a dash means no reading is available. Sleep stages exclude naps.</p>
+{% for day in garmin.days %}
+<details class="card plan-day garmin-day" {% if loop.first %}open{% endif %}>
+  <summary><h2><time datetime="{{ day.date }}">{{ day.date }}</time></h2></summary>
+  <div class="details-body">
+    <dl class="garmin-metrics">
+      <div><dt>Steps</dt><dd>{{ day.steps if day.steps is not none else '—' }}</dd></div>
+      <div><dt>Sleep</dt><dd>{{ day.sleep_detail }}</dd></div>
+      <div><dt>Resting HR</dt><dd>{{ ('%g' | format(day.resting_hr_bpm)) ~ ' bpm' if day.resting_hr_bpm is not none else '—' }}</dd></div>
+    </dl>
+    <details class="disclosure garmin-metric-group"><summary>Recovery · HRV, stress &amp; Body Battery</summary>
+      <p class="meta">Garmin estimates; these are not its Training Readiness score.</p>
+      <dl class="garmin-detail-readings">
+        <div><dt>HRV status</dt><dd>{{ day.hrv_status_display }}</dd></div>
+        {% for label, value in day.recovery_readings %}<div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% endfor %}
+      </dl>
+    </details>
+    <details class="disclosure garmin-metric-group"><summary>Sleep · scores, stages &amp; naps</summary>
+      <dl class="garmin-detail-readings">
+        {% for label, value in day.sleep_score_readings %}<div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% else %}<div><dt>Sleep scores</dt><dd>—</dd></div>{% endfor %}
+        {% for label, value in day.sleep_readings %}<div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% endfor %}
+      </dl>
+    </details>
+    <details class="disclosure garmin-metric-group"><summary>Breathing · respiration &amp; blood oxygen</summary>
+      <dl class="garmin-detail-readings">{% for label, value in day.breathing_readings %}<div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% endfor %}</dl>
+      {% if not day.has_blood_oxygen %}<p class="meta">Garmin returned no blood-oxygen readings for this day.</p>{% endif %}
+      <p class="meta">Blood oxygen is a watch estimate, not a medical test. Availability depends on watch settings and saved readings.</p>
+    </details>
+    <p class="meta">Saved {% if day.synced_at %}<time datetime="{{ day.synced_at }}">{{ day.synced_at }}</time>{% else %}sync time unavailable{% endif %} · Garmin Connect</p>
+  </div>
+</details>
+{% else %}
+<section class="card"><h3>No daily readings yet</h3><p>Sync your watch with Garmin Connect, then use Sync Garmin now.</p></section>
+{% endfor %}
+<p class="meta">Wearable estimates, separate from Hevy workouts and your check-ins. Zeus retrieves only the summaries relevant to your question.</p>
+{% endblock %}

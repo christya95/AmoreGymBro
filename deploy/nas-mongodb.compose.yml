@@ -1,0 +1,46 @@
+# Database-only NAS deployment. Run from the confirmed NAS deployment directory.
+name: amoregymbro-nas
+
+services:
+  mongodb:
+    image: mongo:8.0
+    command: ["mongod", "--wiredTigerCacheSizeGB", "0.25"]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:?Set the NAS bootstrap admin username in .env}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:?Set the NAS bootstrap admin password in .env}
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-amoregymbro}
+      MONGODB_USERNAME: ${MONGODB_USERNAME:?Set the NAS app username in .env}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD:?Set the NAS app password in .env}
+    ports:
+      - "127.0.0.1:27018:27017"
+    volumes:
+      - amoregymbro_mongo_nas_data:/data/db
+      - type: bind
+        source: ./mongo-init.js
+        target: /docker-entrypoint-initdb.d/10-amoregymbro-user.js
+        read_only: true
+        bind:
+          create_host_path: false
+    healthcheck:
+      test:
+        - CMD
+        - mongosh
+        - --quiet
+        - --host
+        - 127.0.0.1
+        - --eval
+        - >-
+          try {
+            const admin = db.getSiblingDB('admin');
+            if (!admin.auth(process.env.MONGODB_USERNAME, process.env.MONGODB_PASSWORD).ok) quit(1);
+            quit(admin.runCommand({ ping: 1 }).ok === 1 ? 0 : 1);
+          } catch (_) { quit(1); }
+      interval: 10s
+      timeout: 10s
+      start_period: 30s
+      retries: 12
+    restart: unless-stopped
+
+volumes:
+  amoregymbro_mongo_nas_data:
+    name: amoregymbro_mongo_nas_data

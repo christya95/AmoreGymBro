@@ -1,0 +1,45 @@
+# Add the web app to the existing private NAS database network; never reinitialize MongoDB.
+name: amoregymbro-nas
+services:
+  coach:
+    image: amoregymbro-coach:local
+    environment:
+      APP_PASSWORD: ${APP_PASSWORD:?Use the project 1Password launcher}
+      APP_SECRET: ${APP_SECRET:?Use the project 1Password launcher}
+      HEVY_API_KEY: ${HEVY_API_KEY:-}
+      GARMIN_API_KEY: ${GARMIN_API_KEY:-}
+      GARMIN_SYNC_ENABLED: "true"
+      GARMIN_SYNC_INTERVAL_SECONDS: "21600"
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-}
+      DATABASE_BACKEND: mongodb
+      DATABASE_PATH: /data/fitness.db
+      RESEARCH_CACHE_PATH: /data/research-cache.json
+      MONGODB_URI: mongodb://mongodb:27017
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-amoregymbro}
+      MONGODB_USERNAME: ${MONGODB_USERNAME:?Set the existing application username}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD:?Use the project 1Password launcher}
+      MONGODB_AUTH_SOURCE: admin
+      APP_TIMEZONE: America/Toronto
+      SYNC_ENABLED: "true"
+      WEBHOOK_WORKER_ENABLED: "false"
+      LANGSMITH_TRACING: "false"
+      LANGCHAIN_TRACING_V2: "false"
+    ports:
+      - "192.168.2.49:8787:8787"
+    volumes:
+      - amoregymbro_coach_nas_data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8787/health', timeout=3)"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+networks:
+  default:
+    external: true
+    name: amoregymbro-nas_default
+volumes:
+  amoregymbro_coach_nas_data:
+    name: amoregymbro_coach_nas_data

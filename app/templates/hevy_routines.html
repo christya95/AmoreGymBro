@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% from "icons.html" import icon %}
+{% block title %}Hevy routines · AMORE GYM BRO{% endblock %}
+{% block body %}
+<header><p class="eyebrow">Your Hevy library</p><h1>Saved routines</h1><p class="lead">Reusable training templates from every folder. These aren’t completed workouts.</p></header>
+<section class="card">
+  <div class="section-head"><h2>{% if checked_at %}{{ routines|length }} routine{{ '' if routines|length == 1 else 's' }} in Hevy{% else %}Hevy connection{% endif %}</h2><span class="pill">Read-only</span></div>
+  {% if checked_at %}<p class="meta">Loaded from Hevy <time datetime="{{ checked_at }}">{{ checked_at }}</time>.</p>{% endif %}
+  {% if error %}<p class="banner warn" role="alert">{{ error }}</p>{% endif %}
+  <a class="button secondary" href="/hevy/routines">{{ icon('refresh') }} Refresh routines</a>
+  <p class="meta">Browsing doesn’t change Hevy or replace your saved weekly plan.</p>
+</section>
+{% for routine in routines %}
+<details class="card plan-day">
+  <summary><div><span class="subtle-label">{{ routine.folder }}</span><h2>{{ routine.title }}</h2><span class="meta">{{ routine.exercises|length }} exercise{{ '' if routine.exercises|length == 1 else 's' }}</span></div></summary>
+  <div class="details-body">
+    {% if routine.updated_at %}<p class="meta">Updated in Hevy <time datetime="{{ routine.updated_at }}">{{ routine.updated_at }}</time>.</p>{% endif %}
+    {% for exercise in routine.exercises %}
+    <section class="routine-library-exercise">
+      <h3>{{ exercise.title }}</h3>
+      {% if exercise.notes %}<p class="meta">{{ exercise.notes }}</p>{% endif %}
+      <ol>{% for line in exercise.sets %}<li>{{ line }}</li>{% else %}<li>No set targets saved.</li>{% endfor %}</ol>
+      {% if exercise.rest_seconds is not none %}<p class="meta">Rest: {{ exercise.rest_seconds }} seconds.</p>{% endif %}
+      {% if exercise.superset_id is not none %}<p class="meta">Superset group {{ exercise.superset_id }}.</p>{% endif %}
+    </section>
+    {% else %}<p>No exercises saved in this template.</p>{% endfor %}
+  </div>
+</details>
+{% else %}{% if not error %}<section class="card"><h2>No routines saved in Hevy</h2><p>Completed workouts appear separately on Home and in History.</p></section>{% endif %}{% endfor %}
+{% endblock %}

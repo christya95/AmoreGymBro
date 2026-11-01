@@ -1,0 +1,11 @@
+<form class="period-form" method="get" action="{{ '/history/exercise' if exercise is defined else '/history' }}" data-period-picker>
+  {% if exercise is defined %}<input type="hidden" name="key" value="{{ exercise.key }}">{% endif %}
+  <input type="hidden" name="period" value="{{ period.key }}" data-period-value disabled>
+  <div class="period-slider" style="--period-index: {{ period.index }}" hidden>
+    <span class="period-thumb" aria-hidden="true"></span>
+    <div class="period-labels" aria-hidden="true">{% for key, label in period.choices %}<span {% if key == period.key %}class="selected"{% endif %}>{{ label }}</span>{% endfor %}</div>
+    <input class="period-range" type="range" min="0" max="3" step="1" value="{{ period.index }}" aria-label="Training history period" aria-valuetext="{{ period.choices[period.index][1] }}">
+  </div>
+  <noscript><label for="history-period">Training history period</label><select id="history-period" name="period">{% for key, label in period.choices %}<option value="{{ key }}" {% if key == period.key %}selected{% endif %}>{{ label }}</option>{% endfor %}</select><button type="submit">Update totals</button></noscript>
+</form>
+<p class="period-caption">{{ period.caption }}</p>

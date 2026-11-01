@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ workout.title or "Workout" }} · AMORE GYM BRO{% endblock %}
+{% block body %}
+  <a class="back" href="/">Back to saved workouts</a>
+  <header>
+    <p class="pill">{{ confirmed }}</p>
+    <h1>{{ workout.title or "Untitled workout" }}</h1>
+    <p class="lead">The session Hevy saved, set by set.</p>
+  </header>
+  {% if workout.deleted_at %}
+    <p class="banner bad" role="status">Hevy reports this workout as deleted <time datetime="{{ workout.deleted_at }}">{{ workout.deleted_at }}</time>.</p>
+  {% endif %}
+  <section class="card">
+    <h2>Session details</h2>
+    <dl class="times">
+      <div><dt>Started</dt><dd>{% if workout.start_time %}<time datetime="{{ workout.start_time }}">{{ workout.start_time }}</time>{% else %}—{% endif %}</dd></div>
+      <div><dt>Ended</dt><dd>{% if workout.end_time %}<time datetime="{{ workout.end_time }}">{{ workout.end_time }}</time>{% else %}—{% endif %}</dd></div>
+    </dl>
+    {% if workout.description %}<h3>Saved notes</h3><p class="saved-text">{{ workout.description }}</p>{% endif %}
+    <details class="disclosure">
+      <summary>Saved record &amp; sync times</summary>
+      <p class="meta">{{ notice }}</p>
+      <dl class="times">
+        <div><dt>Hevy updated</dt><dd>{% if workout.hevy_updated_at %}<time datetime="{{ workout.hevy_updated_at }}">{{ workout.hevy_updated_at }}</time>{% else %}—{% endif %}</dd></div>
+        <div><dt>Copied here</dt><dd><time datetime="{{ workout.local_synced_at }}">{{ workout.local_synced_at }}</time></dd></div>
+      </dl>
+    </details>
+  </section>
+  <div class="section-head"><h2>Saved exercises</h2><span class="subtle-label">As logged in Hevy</span></div>
+  {% for exercise in workout.exercises %}
+    <section class="card exercise-card">
+      <h2>{{ exercise.title or "Exercise" }}</h2>
+      {% if exercise.notes %}<p class="meta saved-text">{{ exercise.notes }}</p>{% endif %}
+      <ol class="sets">
+        {% for entry in exercise.sets %}<li>{{ entry.line }}</li>{% endfor %}
+      </ol>
+      {% if not exercise.sets %}<p class="meta">No sets were saved for this exercise.</p>{% endif %}
+    </section>
+  {% else %}
+    <section class="card"><h2>No exercises in this record</h2><p class="meta">This is the saved workout available to the app.</p></section>
+  {% endfor %}
+{% endblock %}

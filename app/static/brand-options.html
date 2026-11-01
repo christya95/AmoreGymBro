@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>10 brand options · AMORE GYM BRO</title>
+<style>
+:root { color-scheme: light; font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:#252a34; background:#f3f4f7; }
+* { box-sizing:border-box; }
+body { margin:0; padding:32px 28px; }
+main { max-width:1320px; margin:auto; }
+header { display:flex; align-items:end; justify-content:space-between; gap:24px; margin-bottom:24px; }
+.kicker { font-size:10px; font-weight:750; letter-spacing:.15em; text-transform:uppercase; color:#7c8493; margin:0 0 10px; }
+h1 { font-size:30px; letter-spacing:-.045em; margin:0 0 8px; font-weight:720; }
+.intro { font-size:13px; color:#747d8c; line-height:1.6; margin:0; }
+.status { font-size:11px; color:#697687; padding:9px 13px; background:#e9edf3; border-radius:99px; white-space:nowrap; }
+.gallery { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:15px; }
+.choice { padding:0; border:1px solid #e1e4eb; border-radius:20px; background:#fbfcfe; overflow:hidden; text-align:left; color:inherit; font:inherit; cursor:pointer; transition:transform .15s,border-color .15s; }
+.choice:hover { transform:translateY(-3px); border-color:#9baac2; }
+button:focus-visible, a:focus-visible { outline:3px solid #819fc4; outline-offset:4px; }
+.card-top { padding:14px 15px 0; display:flex; justify-content:space-between; align-items:center; color:#8a92a0; font-size:10px; letter-spacing:.09em; }
+.card-top b { color:#536176; font-size:10px; font-weight:550; letter-spacing:0; }
+.sample { min-height:178px; padding:15px 10px 18px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:15px; background:radial-gradient(at 50% 35%,#dfe6f050,transparent 75%); }
+.logo { width:55px; height:55px; border-radius:17px; display:grid; place-items:center; color:#eef3ff; background:#293140; }
+.logo svg { width:42px; height:42px; }
+.wordmark { text-align:center; font-weight:800; line-height:1.03; letter-spacing:-.035em; color:#293140; }
+.wordmark .amore { display:block; font-size:11px; letter-spacing:.27em; padding-left:.27em; margin-bottom:5px; }
+.wordmark .gym { display:block; font-size:23px; }
+.caption { padding:13px 15px 16px; border-top:1px solid #edf0f4; }
+.caption h2 { font-size:12px; margin:0 0 4px; font-weight:650; }
+.caption p { font-size:10px; color:#7d8593; margin:0; line-height:1.5; }
+.zeus .logo { background:#dfe7f7; color:#506991; border-radius:50%; }
+.zeus .wordmark { font-weight:650; }
+.momentum .logo { background:transparent; color:#536a8b; }
+.momentum .wordmark { font-style:italic; }
+.momentum .wordmark .amore { letter-spacing:.18em; }
+.crest .logo { background:transparent; color:#293140; }
+.crest .wordmark .gym { font-size:19px; letter-spacing:.12em; padding-left:.12em; }
+.lab .logo { border:1px solid #aebccc; background:#e8edf3; color:#5f748b; border-radius:14px; }
+.lab .wordmark { font-weight:600; }
+.lab .wordmark .gym { font-size:20px; letter-spacing:.04em; }
+.heart .logo { background:#f0e7ec; color:#a27e8d; border-radius:21px; }
+.heart .wordmark { font-weight:650; }
+.heart .wordmark .amore { font-family:Georgia,serif; font-size:20px; letter-spacing:.05em; margin-bottom:4px; }
+.heart .wordmark .gym { font-size:16px; letter-spacing:.13em; }
+.titan .logo { border-radius:8px; background:#24262d; }
+.titan .wordmark .gym { font-family:Impact,"Arial Narrow",sans-serif; font-size:27px; letter-spacing:.02em; font-weight:500; }
+.orbit .logo { border-radius:50%; background:#e3e9ed; color:#617886; }
+.orbit .wordmark { font-weight:500; }
+.orbit .wordmark .amore { font-size:12px; font-weight:600; }
+.orbit .wordmark .gym { font-size:22px; letter-spacing:.045em; }
+.lift .logo { background:#e2eee8; color:#6b8a7a; }
+.lift .wordmark { font-weight:750; }
+.lift .wordmark .amore { letter-spacing:.15em; }
+.editorial .logo { background:transparent; color:#3f4856; font-family:Georgia,serif; font-size:44px; font-style:italic; }
+.editorial .wordmark .amore { font-family:Georgia,serif; font-size:24px; letter-spacing:-.025em; font-weight:500; margin-bottom:8px; padding:0; }
+.editorial .wordmark .gym { font-size:10px; letter-spacing:.3em; padding-top:9px; border-top:1px solid #b9bec6; font-weight:600; }
+footer { display:flex; justify-content:space-between; gap:15px; font-size:11px; color:#7d8592; padding:21px 0 0; }
+footer a { color:#5a6d88; text-decoration:none; }
+dialog { width:min(850px,calc(100% - 24px)); max-height:calc(100svh - 24px); border:1px solid white; border-radius:28px; padding:0; background:#f3f4f7; color:inherit; }
+dialog::backdrop { background:#1c273950; backdrop-filter:blur(8px); }
+.modal-top { padding:18px 24px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #e0e4eb; }
+.modal-top p { margin:0; font-size:12px; color:#717c8e; }
+.close { border:1px solid #e0e4eb; background:#fff; color:#5b6472; border-radius:50%; width:34px; height:34px; font-size:22px; cursor:pointer; }
+.preview-layout { display:grid; grid-template-columns:1fr 1fr; }
+.preview-info { align-self:center; padding:38px; }
+.preview-info h2 { font-size:30px; letter-spacing:-.04em; margin:0 0 14px; }
+.preview-info p { color:#7b8493; font-size:14px; line-height:1.7; }
+.preview-info strong { color:#4d607a; }
+.phone { background:#f7f8fa; border-left:1px solid #e0e4eb; padding:38px 28px; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:555px; }
+.phone .sample { padding:0; min-height:0; width:100%; gap:20px; background:none; }
+.phone .logo { width:76px; height:76px; border-radius:23px; }
+.phone .logo svg { width:58px; height:58px; }
+.phone .zeus .logo, .phone .orbit .logo { border-radius:50%; }
+.phone .titan .logo { border-radius:10px; }
+.phone .wordmark .amore { font-size:17px; }
+.phone .wordmark .gym { font-size:36px; }
+.phone .crest .wordmark .gym { font-size:28px; }
+.phone .heart .wordmark .amore { font-size:33px; }
+.phone .heart .wordmark .gym { font-size:22px; }
+.phone .editorial .wordmark .amore { font-size:40px; }
+.phone .editorial .wordmark .gym { font-size:14px; }
+.phone .editorial .logo { font-size:61px; }
+.tagline { font-size:11px; color:#89919e; text-align:center; margin:17px 0 26px; }
+.login-form { background:#fff; border:1px solid #e7eaf0; border-radius:23px; padding:21px; width:100%; text-align:center; }
+.login-form h3 { font-size:14px; margin:0 0 17px; }
+.login-form label { display:block; font-size:10px; color:#798292; margin-bottom:9px; }
+.fake-input { height:40px; border:1px solid #e2e5ec; border-radius:11px; background:#fafbfc; margin-bottom:15px; }
+.fake-button { background:#252930; color:#fff; border-radius:99px; padding:13px; font-size:12px; }
+.preview-note { color:#969eaa; font-size:9px; text-align:center; margin:13px 0 0; }
+@media(max-width:1000px){ .gallery{grid-template-columns:repeat(3,minmax(0,1fr));} }
+@media(max-width:650px){ body{padding:25px 16px;} header{display:block;} h1{font-size:27px;} .status{display:inline-block;margin-top:15px;} .gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;} .sample{min-height:168px;} .wordmark .gym{font-size:21px;} .caption{padding:12px;} .preview-layout{grid-template-columns:1fr;} .preview-info{padding:24px;} .preview-info h2{font-size:22px;} .preview-info p{margin-bottom:0;font-size:12px;} .phone{border-left:0;border-top:1px solid #e0e4eb;min-height:510px;} footer{flex-direction:column;gap:8px;} }
+@media(prefers-reduced-motion:reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+<main>
+<header><div><p class="kicker">AMORE GYM BRO / Brand explorations</p><h1>Ten ways to make an entrance.</h1><p class="intro">Pick a mark that feels like you. Click any option to see it on the sign-in screen.</p></div><span class="status">Your current app stays unchanged</span></header>
+<div class="gallery" id="gallery"></div>
+<footer><span>Choose a number in chat. We can also mix a logo from one with the lettering from another.</span><a href="/login">Back to the app →</a></footer>
+</main>
+<dialog id="preview" aria-labelledby="preview-title"><div class="modal-top"><p id="preview-number"></p><button class="close" type="button" aria-label="Close preview">×</button></div><div class="preview-layout"><div class="preview-info"><p class="kicker">Login concept</p><h2 id="preview-title"></h2><p id="preview-description"></p><p><strong>Like this one?</strong> Tell me its number in chat.</p></div><div class="phone"><div id="phone-brand"></div><p class="tagline">A little stronger, every day.</p><div class="login-form"><h3>Sign in</h3><label>Password</label><div class="fake-input" aria-hidden="true"></div><div class="fake-button">Continue</div></div><p class="preview-note">Visual preview · no sign-in required</p></div></div></dialog>
+<script>
+const svg = content => `<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${content}</svg>`;
+const concepts = [
+{ id:1, name:'Summit', style:'summit', short:'Clean. Athletic. Confident.', description:'An A-shaped peak with a barbell crossbar. Bold stacked lettering makes the app name the focal point. This builds on the current direction.', mark:svg('<path d="M14 48 29 16h6l15 32M21 36h22M22 32v8M42 32v8"/>') },
+{ id:2, name:'Zeus', style:'zeus', short:'Quiet power, with a spark.', description:'A soft blue circular badge and a crisp lightning bolt. A clear link to Proffessor Zeus, with lighter lettering that fits the glass-style interface.', mark:svg('<path d="m36 9-20 27h15l-3 19 22-30H34z"/>') },
+{ id:3, name:'Momentum', style:'momentum', short:'Always moving forward.', description:'Two forward chevrons with a subtle slant in the title. It feels energetic and modern without needing a heavy badge.', mark:svg('<path d="m12 16 16 16-16 16m21-32 16 16-16 16" stroke-width="7"/>') },
+{ id:4, name:'The Club', style:'crest', short:'Your own training club.', description:'A restrained shield with an A monogram and spaced lettering. A classic club identity: disciplined, personal, and easy to recognize as a small icon.', mark:svg('<path d="m32 6 21 9v18c0 12-21 25-21 25S11 45 11 33V15z"/><path d="m22 38 10-21 10 21m-15-8h10"/>') },
+{ id:5, name:'Strength Lab', style:'lab', short:'Science meets strength.', description:'A technical barbell badge, fine outlines, and clean typography. A good match for the science-informed coaching and clear presentation of training data.', mark:svg('<path d="M19 32h26M12 23h7v18h-7zm33 0h7v18h-7zM7 27v10m50-10v10"/>') },
+{ id:6, name:'Amore', style:'heart', short:'Strong, with a little heart.', description:'A heart crossed by a barbell, soft rose tones, and warmer lettering. This puts the Amore name first and gives the app a more personal feel.', mark:svg('<path d="M32 51 12 31C-2 17 17 4 32 20 47 4 66 17 52 31z"/><path d="M16 32h32m-31-5v10m30-10v10"/>') },
+{ id:7, name:'Titan', style:'titan', short:'Bold gym-floor energy.', description:'A geometric GB monogram inside a square badge, paired with compact athletic lettering. The most assertive direction in the set.', mark:svg('<path d="M29 18H14v28h15V33h-8M37 18h11l5 6-5 7H37zm0 13h12l5 7-6 8H37z" stroke-width="4"/>') },
+{ id:8, name:'Orbit', style:'orbit', short:'Calm and connected.', description:'A circular mark around a rising A, with open, airy lettering. It fits a calm health dashboard and a softer, more balanced feel.', mark:svg('<circle cx="32" cy="32" r="23"/><path d="m20 43 12-24 12 24m-19-9h14M46 12l5 6"/>') },
+{ id:9, name:'The Next Rep', style:'lift', short:'Progress you can see.', description:'Rising columns and an upward arrow suggest progressive strength. Muted sage adds a subtle training accent while keeping the login screen understated.', mark:svg('<path d="M14 49V36m12 13V29m12 20V22m12 27V12M12 27 30 17h12m-7-7 8 7-8 7" stroke-width="4"/>') },
+{ id:10, name:'Editorial', style:'editorial', short:'The name does the talking.', description:'A simple serif A and an editorial wordmark. Less overtly athletic, with a considered, personal-brand feel. A clean alternative to a badge logo.', mark:'A' },
+];
+function sample(c) { return `<div class="sample ${c.style}"><div class="logo">${c.mark}</div><div class="wordmark"><span class="amore">AMORE</span><span class="gym">GYM BRO</span></div></div>`; }
+const gallery = document.getElementById('gallery');
+concepts.forEach(c => { const button = document.createElement('button'); button.type='button'; button.className='choice'; button.setAttribute('aria-label',`Preview option ${c.id}: ${c.name}`); button.innerHTML=`<div class="card-top"><span>${String(c.id).padStart(2,'0')}</span><b>Preview ↗</b></div>${sample(c)}<div class="caption"><h2>${c.name}</h2><p>${c.short}</p></div>`; button.addEventListener('click',()=>openPreview(c)); gallery.append(button); });
+const modal=document.getElementById('preview');
+function openPreview(c) { document.getElementById('preview-number').textContent=`OPTION ${String(c.id).padStart(2,'0')} / 10`; document.getElementById('preview-title').textContent=c.name; document.getElementById('preview-description').textContent=c.description; document.getElementById('phone-brand').innerHTML=sample(c); modal.showModal(); }
+document.querySelector('.close').addEventListener('click',()=>modal.close());
+modal.addEventListener('click',e=>{if(e.target===modal){const r=modal.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)modal.close();}});
+</script>
+</body>
+</html>

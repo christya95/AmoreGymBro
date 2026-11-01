@@ -1,0 +1,24 @@
+.env
+.env.*
+!.env.example
+*.private.md
+data/
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+.python-version.local
+.DS_Store
+
+# Private NAS deployment settings and MongoDB backup archives.
+/deploy/.env
+/deploy/backups/
+
+# Local NAS SSH credentials.
+/rsa-nas-ssh-mongodb
+/rsa-nas-ssh-mongodb.pub

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Set up · AMORE GYM BRO{% endblock %}
+{% block body %}
+  <header>
+    <p class="eyebrow">Before your first session</p>
+    <h1>Finish app setup</h1>
+    <p class="lead">Supply the app’s launch credentials, then sign in.</p>
+  </header>
+  <section class="card">
+    <h2>Start with 1Password</h2>
+    <p>The app needs its password and session secret from the <strong>AmoreGymBro</strong> vault at launch. Do not paste keys into chat or this page.</p>
+    <details class="disclosure">
+    <summary>Mac development startup</summary>
+    <ol class="setup-steps">
+      <li>Unlock 1Password and make sure the AmoreGymBro vault is available.</li>
+      <li>From the project folder on this Mac, run <code>./start-local.sh</code>. It uses <code>op run</code> with <code>.env.app.references</code>, a file containing references only, to supply credentials at launch.</li>
+      <li>Open the sign-in page using your app password from 1Password.</li>
+    </ol>
+    </details>
+    <p class="meta">OpenAI API usage is billed separately from a ChatGPT subscription.</p>
+  </section>
+  <details class="card disclosure">
+    <summary>Configuration &amp; sync details</summary>
+    <p class="meta">The local <code>.env</code> file is for ordinary configuration, such as display and sync settings. Secret values are supplied at launch.</p>
+    <p class="meta"><code>APP_PASSWORD</code> needs at least 10 characters and <code>APP_SECRET</code> at least 16. <code>HEVY_API_KEY</code> enables read-only sync; <code>OPENAI_API_KEY</code> enables Proffessor Zeus. Store their values in 1Password.</p>
+    <p class="meta">Leave <code>HEVY_WEBHOOK_AUTHORIZATION</code> unset and Hevy callbacks disabled. A callback URL is not needed for sync.</p>
+  </details>
+  <a class="button" href="/login">Go to sign in</a>
+{% endblock %}

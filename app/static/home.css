@@ -1,0 +1,129 @@
+/* Home only: silver glass surfaces, pastel accents, and a quiet daily hierarchy. */
+.home-page main { max-width: 900px; }
+.home-page .app-brand { margin-bottom: 24px; }
+.home-page .dashboard-header { align-items: flex-start; margin-bottom: 24px; }
+.home-page .dashboard-header h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); letter-spacing: -.05em; }
+.home-page .brief-date { color: #5d6e83; font-size: .73rem; letter-spacing: .025em; text-transform: none; margin-bottom: 8px; }
+.home-page .signout { background: #ffffff80; border-color: #dfe5ec; box-shadow: none; }
+.home-page .card { padding: 24px; border-radius: 26px; background: #ffffffc9; border-color: #fff; box-shadow: 0 8px 30px #25385108, inset 0 1px 0 #fff; }
+.home-page .card .eyebrow { color: #5f7086; font-size: .66rem; }
+.home-page .card h2 { color: #2e3c50; }
+.home-page .section-head > div { min-width: 0; }
+.home-page .today-card { position: relative; padding: 26px; background: radial-gradient(ellipse at 100% 0, #dfebefb3, transparent 70%), linear-gradient(115deg, #ffffffed, #f1f5f7e6); }
+.home-page .today-card .section-head { margin-bottom: 8px; }
+.home-page .today-card .section-head .eyebrow { margin: 0; }
+.home-page .today-card .stat-symbol { background: #ffffffa6; color: #64877b; border: 1px solid #ffffffd9; }
+.home-page .today-pill { margin: 0 0 10px; background: #e6f0eb; color: #426d5e; font-size: .68rem; }
+.home-page .today-card h2 { max-width: 34rem; font-size: clamp(1.3rem, 4.6vw, 1.8rem); letter-spacing: -.035em; line-height: 1.25; margin-bottom: 8px; }
+.home-page .today-focus { color: #5e6e81; max-width: 38rem; font-size: .88rem; line-height: 1.6; margin-bottom: 14px; overflow-wrap: anywhere; }
+.home-page .today-prescription { display: flex; flex-wrap: wrap; gap: 8px 20px; list-style: none; margin: 16px 0 20px; padding: 0; color: #5b6d7b; font-size: .8rem; }
+.home-page .today-prescription strong { font-size: 1.06rem; font-weight: 650; color: #344d55; font-variant-numeric: tabular-nums; margin-right: 3px; }
+.home-page .today-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+.home-page .today-footer .meta { flex: 1 1 180px; margin: 0; }
+.home-page .today-card .button { min-height: 48px; padding: 11px 18px; font-size: .82rem; }
+.home-page .today-card .button svg { width: 16px; height: 16px; }
+.home-page .brief-report { border-top: 1px solid #d8e2e8; margin: 18px 0 0; padding-top: 12px; color: #5e6e81; font-size: .76rem; }
+.home-page .brief-report span { font-weight: 650; }
+.home-page .home-health-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; margin-bottom: 16px; }
+.home-page .home-health-grid > .card { margin: 0; min-width: 0; }
+.home-page .weight-card { background: radial-gradient(ellipse at 100% 0, #e9e8f66b, transparent 70%), #ffffffcf; }
+.home-page .weight-card .section-head { margin-bottom: 12px; }
+.home-page .metric-head { flex-wrap: wrap; gap: 6px 16px; align-items: flex-start; }
+.home-page .metric-number { display: block; color: #354b66; font-size: clamp(2rem, 5.2vw, 2.6rem); line-height: 1.25; }
+.home-page .metric-head .meta { margin: 6px 0 0; font-size: .73rem; }
+.home-page .delta { padding-top: 9px; color: #4f6480; }
+.home-page .delta small { color: #66758a; font-size: .64rem; }
+.home-page .chart-frame { margin-top: 14px; }
+.home-page .weight-chart { height: 138px; }
+.home-page .chart-labels { font-size: .68rem; padding: 0 4px; }
+.home-page .chart-data { margin-top: 10px; color: #5d6e84; font-size: .76rem; }
+.home-page .chart-data summary { font-size: .76rem; }
+.home-page .chart-data li { align-items: baseline; overflow-wrap: anywhere; }
+.home-page .chart-data a { flex: 1 1 180px; min-width: 0; padding: 5px 0; color: #49658a; }
+.home-page .chart-data strong { font-variant-numeric: tabular-nums; }
+.home-page .empty-chart { padding: 24px 0; color: #687b91; }
+.home-page .empty-chart p { max-width: 230px; margin-bottom: 0; }
+.home-page .weight-goal { margin-top: 16px; padding: 14px 16px; border: 1px solid #e5e1ef; border-radius: 16px; background: #f1eef780; }
+.home-page .weight-goal .eyebrow { display: block; color: #716387; font-size: .63rem; margin-bottom: 5px; }
+.home-page .weight-goal p { margin: 0; color: #5a536c; font-size: .8rem; line-height: 1.55; overflow-wrap: anywhere; }
+.home-page #garmin { background: radial-gradient(ellipse at 100% 0, #e2efe966, transparent 75%), #ffffffcf; }
+.home-page #garmin .section-head { align-items: flex-start; flex-wrap: wrap; gap: 8px; }
+.home-page #garmin .report-pill { margin: 0; font-size: .62rem; }
+.home-page #garmin .garmin-metrics { gap: 8px; margin: 22px 0; }
+.home-page #garmin .garmin-metrics dd { color: #354b55; font-size: clamp(1.08rem, 3.4vw, 1.45rem); letter-spacing: -.035em; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.home-page #garmin .garmin-metrics dt { font-size: .71rem; }
+.home-page #garmin .garmin-actions { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+.home-page #garmin .garmin-actions .button,
+.home-page #garmin .garmin-actions button { font-size: .8rem; min-height: 48px; padding: 11px 14px; }
+.home-page .training-card { background: radial-gradient(ellipse at 100% 0, #eeebf44d, transparent 70%), #ffffffcf; }
+.home-page .training-scope { color: #627087; font-size: .72rem; margin: 0 0 12px; }
+.home-page .training-totals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 22px; padding-bottom: 20px; border-bottom: 1px solid #e2e7ef; }
+.home-page .training-totals > div { display: flex; flex-direction: column; min-width: 0; padding-right: 12px; border-right: 1px solid #e2e7ef; }
+.home-page .training-totals > div:last-child { padding-right: 0; border: 0; }
+.home-page .training-totals dt { order: 1; color: #68758a; font-size: .72rem; margin-top: 4px; }
+.home-page .training-totals dd { margin: 0; font-size: clamp(1.5rem, 5vw, 1.9rem); font-weight: 650; line-height: 1.2; letter-spacing: -.045em; font-variant-numeric: tabular-nums; color: #364a63; overflow-wrap: anywhere; }
+.home-page .training-chart-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 12px; }
+.home-page .training-chart-heading h3 { margin: 0; font-size: .85rem; color: #4b5c74; }
+.home-page .training-chart-heading .meta { margin: 0; font-size: .72rem; }
+.home-page .volume-chart { height: 164px; margin: 18px -4px 6px; padding: 3px 4px 0; }
+.home-page .volume-column { max-width: 90px; min-height: 150px; }
+.home-page .bar-track { background: #eff1f680; width: 72%; max-width: 42px; border-radius: 9px; }
+.home-page .volume-bar { border-radius: 9px; background: linear-gradient(#b0a7d3, #d8d3ea); }
+.home-page .volume-column:last-child .volume-bar { background: linear-gradient(#88a4bc, #bdd2df); }
+.home-page .volume-column:focus-visible { outline-offset: -3px; border-radius: 9px; }
+.home-page .bar-label { font-size: .66rem; }
+.home-page .chart-note { font-size: .72rem; line-height: 1.6; color: #65748a; }
+.home-page .training-empty { padding: 22px 0 6px; }
+.home-page .home-sync { scroll-margin-top: 18px; padding: 18px 24px; background: #f8fafbbf; }
+.home-page .home-sync > summary { gap: 12px; padding: 4px 0; min-height: 48px; }
+.home-page .sync-summary-copy { flex: 1; min-width: 0; }
+.home-page .sync-summary-title { display: block; font-size: .88rem; font-weight: 650; color: #41536b; }
+.home-page .sync-summary-note { display: block; margin-top: 4px; color: #64758a; font-weight: 400; font-size: .7rem; overflow-wrap: anywhere; }
+.home-page .sync-indicator { flex-shrink: 0; width: 7px; height: 7px; background: #a5b2c2; border-radius: 50%; }
+.home-page .sync-indicator.needs-attention { background: #aa713a; box-shadow: 0 0 0 4px #f5ebdc; }
+.home-page .home-sync-body { padding-top: 22px; }
+.home-page .hevy-connection { padding-bottom: 22px; border-bottom: 1px solid #e0e6ee; }
+.home-page .hevy-connection .section-head > svg { color: #8194ab; }
+.home-page .hevy-connection button { min-height: 48px; }
+.home-page .home-workouts { padding-top: 22px; }
+.home-page .home-workouts > .section-head { align-items: baseline; }
+.home-page .home-workouts .subtle-label { font-size: .68rem; }
+.home-page .home-workouts-empty { padding: 10px 0; }
+.home-page .workout-list { margin-bottom: 14px; }
+.home-page .list .workout-tile { padding: 14px; border-radius: 18px; box-shadow: none; background: #ffffffb3; }
+.home-page .workout-tile .workout-icon { width: 36px; height: 36px; border-radius: 12px; }
+.home-page .workout-tile .title { font-size: .84rem; }
+.home-page .record-notice { padding: 0; margin-bottom: 14px; }
+.home-page .sync-details { padding-top: 6px; border-top: 1px solid #e0e6ee; font-size: .78rem; color: #5d6e84; }
+.home-page .sync-details > summary { font-size: .78rem; }
+.home-page .times { margin-top: 12px; }
+.home-page .runs { overflow-wrap: anywhere; }
+@media (min-width: 760px) {
+  .home-page { padding-top: calc(32px + env(safe-area-inset-top)); }
+  .home-page .home-health-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; }
+  .home-page .home-health-grid > :only-child { grid-column: 1 / -1; }
+  .home-page .today-card { padding: 28px 32px; }
+  .home-page .today-footer .button { min-width: 190px; }
+}
+@media (max-width: 420px) {
+  .home-page .app-brand { margin-bottom: 22px; }
+  .home-page .dashboard-header { gap: 10px; margin-bottom: 20px; }
+  .home-page .dashboard-header h1 { font-size: 1.78rem; }
+  .home-page .signout { padding: 8px 11px; font-size: .7rem; }
+  .home-page .card { padding: 20px; border-radius: 23px; }
+  .home-page .today-card { padding: 22px; }
+  .home-page .today-footer { gap: 12px; }
+  .home-page .today-footer .meta { flex-basis: 100%; }
+  .home-page .today-card .button { width: 100%; }
+  .home-page .today-prescription { gap: 6px 14px; }
+  .home-page .home-sync { padding: 16px; }
+  .home-page .sync-summary-title { font-size: .82rem; }
+  .home-page .home-sync > summary { gap: 9px; }
+  .home-page .sync-summary-note { font-size: .68rem; }
+  .home-page .workout-tile > svg { display: none; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .home-page .card { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .home-page .today-card { background: #f0f5f6; }
+  .home-page .weight-goal { background: #f1eef7; }
+}

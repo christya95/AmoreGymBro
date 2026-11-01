@@ -1,0 +1,23 @@
+{% if garmin_configured or garmin.days %}
+<section class="card" id="garmin" aria-labelledby="garmin-title">
+  <div class="section-head"><div><p class="eyebrow">Garmin Connect</p><h2 id="garmin-title">Your daily rhythm</h2></div><span class="pill report-pill">Watch estimates</span></div>
+  {% if garmin.latest %}
+  <p class="meta">Latest saved day: <time datetime="{{ garmin.latest.date }}" data-date-only>{{ garmin.latest.date }}</time>. Totals can change after your watch syncs.</p>
+  <dl class="garmin-metrics">
+    <div><dt>Steps</dt><dd>{{ garmin.latest.steps if garmin.latest.steps is not none else '—' }}</dd></div>
+    <div><dt>Sleep</dt><dd>{{ garmin.latest.sleep_display }}</dd></div>
+    <div><dt>Resting HR</dt><dd>{{ ('%g' | format(garmin.latest.resting_hr_bpm)) ~ ' bpm' if garmin.latest.resting_hr_bpm is not none else '—' }}</dd></div>
+  </dl>
+  {% else %}<p>No daily summaries yet. Sync your watch with Garmin Connect, then check here.</p>{% endif %}
+  <p class="meta">{% if garmin.state.last_success_at %}Last synced <time datetime="{{ garmin.state.last_success_at }}">{{ garmin.state.last_success_at }}</time>.{% else %}Waiting for the first sync.{% endif %} Separate from Hevy workouts and your check-ins.</p>
+  {% if garmin.state.last_error %}<p class="banner warn" role="status">{{ garmin.state.last_error }}</p>{% endif %}
+  <div class="garmin-actions">
+    <a class="button secondary" href="/garmin">View Garmin details</a>
+    <form method="post" action="/garmin/sync" data-garmin-sync-form>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <button type="submit" {% if not garmin_configured %}disabled{% endif %}>{{ icon('refresh') }} <span data-garmin-sync-label>Sync Garmin now</span></button>
+      <p class="garmin-sync-progress meta" role="status" aria-live="polite" data-garmin-sync-status></p>
+    </form>
+  </div>
+</section>
+{% endif %}

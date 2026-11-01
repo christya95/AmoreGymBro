@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}{{ exercise.title }}{% endblock %}
+{% block body %}
+  <a class="back" href="/history?period={{ period.key }}">Back to history</a>
+  <p class="pill">{{ confirmed }}</p>
+  <h1>{{ exercise.title }}</h1>
+  <p class="lead">Saved sets and records for the selected period.</p>
+  {% include "period_selector.html" %}
+  <details class="disclosure history-notes"><summary>How saved history is calculated</summary><p class="meta">{{ notice }}</p><p class="meta">{{ volume_note }}</p><p class="meta">{{ record_note }}</p></details>
+  <section class="card">
+    <dl class="times">
+      <div>
+        <dt>{{ period.record_label }}</dt>
+        <dd>{{ exercise.record_line }}</dd>
+      </div>
+      <div>
+        <dt>Volume</dt>
+        <dd>{{ exercise.volume_line }}</dd>
+      </div>
+      <div>
+        <dt>Sessions</dt>
+        <dd>{{ exercise.session_count }}</dd>
+      </div>
+    </dl>
+    {% if exercise.sets_missing_load %}
+      <p class="meta">{{ exercise.sets_missing_load }} working sets are missing a weight or a rep count and were left out of the volume.</p>
+    {% endif %}
+  </section>
+  {% if not exercise.sessions %}<p class="notice">No sessions in this period. Slide to a wider period to see your saved sets.</p>{% endif %}
+  {% for session in exercise.sessions %}
+    <section class="card">
+      <h2>{{ session.workout_title or "Workout" }}</h2>
+      <p class="meta">
+        {% if session.start_time %}<time datetime="{{ session.start_time }}">{{ session.start_time }}</time>{% else %}No start time{% endif %}
+        · volume {{ session.volume_line }}
+      </p>
+      {% if session.untrusted_note %}
+        <p class="meta">{{ session.untrusted_note }}</p>
+      {% endif %}
+      <ol class="sets">
+        {% for entry in session.sets %}
+          <li>{{ entry.line }}</li>
+        {% endfor %}
+      </ol>
+      <p><a href="/workouts/{{ session.workout_id }}">Open confirmed workout</a></p>
+    </section>
+  {% endfor %}
+{% endblock %}
+
+{% block scripts %}<script src="/static/history-period.js" defer></script>{% endblock %}

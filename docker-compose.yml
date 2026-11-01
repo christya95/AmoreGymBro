@@ -1,0 +1,69 @@
+# Later deployment on the NAS. Do not publish this port through the router.
+# Named volumes stay on the machine running Docker, not on an SMB share.
+name: amoregymbro
+
+services:
+  coach:
+    build: .
+    env_file:
+      - .env
+    environment:
+      HEVY_API_KEY: ${HEVY_API_KEY:-}
+      GARMIN_API_KEY: ${GARMIN_API_KEY:-}
+      GARMIN_SYNC_ENABLED: ${GARMIN_SYNC_ENABLED:-false}
+      APP_PASSWORD: ${APP_PASSWORD:?Unlock 1Password and use op run}
+      APP_SECRET: ${APP_SECRET:?Unlock 1Password and use op run}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      HEVY_WEBHOOK_AUTHORIZATION: ${HEVY_WEBHOOK_AUTHORIZATION:-}
+      DATABASE_BACKEND: mongodb
+      DATABASE_PATH: /data/fitness.db
+      MONGODB_URI: mongodb://mongodb:27017
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-amoregymbro}
+      MONGODB_USERNAME: ${MONGODB_USERNAME:?Set MONGODB_USERNAME in .env}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD:?Set MONGODB_PASSWORD in .env}
+      MONGODB_AUTH_SOURCE: admin
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - fitness_coach_data:/data
+    ports:
+      - "${BIND_HOST:-127.0.0.1}:${APP_PORT:-8787}:8787"
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:8.0
+    command: ["mongod", "--wiredTigerCacheSizeGB", "0.25"]
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:?Set MONGO_INITDB_ROOT_USERNAME in .env}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:?Set MONGO_INITDB_ROOT_PASSWORD in .env}
+      MONGODB_USERNAME: ${MONGODB_USERNAME:?Set MONGODB_USERNAME in .env}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD:?Set MONGODB_PASSWORD in .env}
+      MONGODB_DATABASE: ${MONGODB_DATABASE:-amoregymbro}
+    volumes:
+      - fitness_coach_mongo:/data/db
+      - ./docker/mongo-init.js:/docker-entrypoint-initdb.d/10-amoregymbro-user.js:ro
+    # No host port: coach connects over the private Compose network.
+    healthcheck:
+      test:
+        - CMD
+        - mongosh
+        - --quiet
+        - --host
+        - 127.0.0.1
+        - --eval
+        - >-
+          try {
+            const admin = db.getSiblingDB('admin');
+            if (!admin.auth(process.env.MONGO_INITDB_ROOT_USERNAME, process.env.MONGO_INITDB_ROOT_PASSWORD).ok) quit(1);
+            quit(admin.runCommand({ ping: 1 }).ok === 1 ? 0 : 1);
+          } catch (_) { quit(1); }
+      interval: 10s
+      timeout: 10s
+      start_period: 30s
+      retries: 12
+    restart: unless-stopped
+
+volumes:
+  fitness_coach_data:
+  fitness_coach_mongo:

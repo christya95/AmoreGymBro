@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Sign in · AMORE GYM BRO{% endblock %}
+{% block body_class %}login-page{% endblock %}
+{% block app_brand %}{% endblock %}
+{% block body %}
+  <header class="login-header">
+    <div class="login-symbol" aria-hidden="true">
+      {% include "brand_logo.html" %}
+    </div>
+    <h1 class="login-wordmark"><span>AMORE</span><span>GYM BRO</span></h1>
+    <p class="lead">A little stronger, every day.</p>
+  </header>
+  <form class="card login-card" method="post" action="/login" aria-labelledby="signin-title">
+    <h2 id="signin-title">Sign in</h2>
+    {% if error %}
+      <p class="banner bad" role="alert">{{ error }}</p>
+    {% endif %}
+    <label for="password">Password</label>
+    <input aria-describedby="signin-help" id="password" name="password" type="password" autocomplete="current-password" required>
+    <button type="submit">Continue</button>
+    <p id="signin-help" class="meta login-help">Open your saved training with your app password.</p>
+  </form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Review Hevy changes · AMORE GYM BRO{% endblock %}
+{% block body %}
+<header><p class="eyebrow">Your existing routines</p><h1>Review Hevy changes</h1><p class="lead">Same daily routines. No extra copies.</p></header>
+{% if error %}<section class="card"><h2>Save paused</h2><p>{{ error }}</p><a class="button secondary" href="/plan">Back to my plan</a></section>
+{% elif review.already_current and not review.can_approve %}<section class="card"><h2>Already up to date</h2><p>Your daily routines match the saved plan. Nothing needs saving.</p><a class="button secondary" href="/plan">Back to my plan</a></section>
+{% elif review %}
+<p class="notice">Review version {{ review.plan_version }} below. Approval updates these existing Hevy templates; completed workouts stay unchanged.</p>
+{% for day in review.changes %}
+<details class="card plan-day" {% if day.changed %}open{% endif %}>
+<summary><h2>{{ day.day }} <small>{{ 'Changes to save' if day.changed else 'No changes' }}</small></h2></summary>
+<div class="details-body"><h3>{{ day.title }}</h3>
+{% if day.changed %}<h4>Replace</h4><ul>{% for item in day.removed_lines %}<li>{{ item }}</li>{% endfor %}</ul><h4>With</h4><ul>{% for item in day.added_lines %}<li>{{ item }}</li>{% endfor %}</ul>
+<details class="disclosure"><summary>Full routine before &amp; after</summary><h4>Currently in Hevy</h4><ul>{% for item in day.before %}<li>{{ item }}</li>{% endfor %}</ul><h4>Your updated plan</h4><ul>{% for item in day.after %}<li>{{ item }}</li>{% endfor %}</ul></details>{% else %}<p>Uses the same routine without edits.</p>{% endif %}</div>
+</details>
+{% endfor %}
+{% if approval_token and review.can_approve %}<section class="card"><h2>Ready to save?</h2><p>Only the changes above will be sent to Hevy. This review expires in 10 minutes.</p>
+<form method="post" action="/plan/hevy/approve"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><input type="hidden" name="approval_token" value="{{ approval_token }}"><button type="submit">Approve &amp; save to Hevy</button></form>
+<a class="button secondary" href="/plan">Keep Hevy unchanged</a></section>{% endif %}
+{% endif %}
+{% endblock %}

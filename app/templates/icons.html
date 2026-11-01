@@ -1,0 +1,14 @@
+{% macro icon(name) -%}
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+{% if name == 'home' %}<path d="m3 10 9-7 9 7v10H3z"/><path d="M9 20v-7h6v7"/>
+{% elif name == 'history' %}<path d="M4 19V5m0 14h16M8 15l4-5 4 2 4-7"/>
+{% elif name == 'goals' %}<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>
+{% elif name == 'check' %}<rect x="5" y="5" width="14" height="16" rx="3"/><path d="M9 3h6v4H9zM9 14l2 2 4-4"/>
+{% elif name == 'zeus' %}<path d="m13 2-9 12h7l-1 8 10-13h-8z"/>
+{% elif name == 'arrow' %}<path d="M5 12h14m-5-5 5 5-5 5"/>
+{% elif name == 'refresh' %}<path d="M20 7v5h-5M4 17v-5h5M6 6a8 8 0 0 1 13 3M18 18A8 8 0 0 1 5 15"/>
+{% elif name == 'dumbbell' %}<path d="m6 4-2 2 14 14 2-2M4 9l5-5m6 16 5-5M3 6l3-3m12 18 3-3"/>
+{% elif name == 'weight' %}<rect x="4" y="4" width="16" height="16" rx="5"/><path d="M8 9a5 5 0 0 1 8 0m-4 2 2-3"/>
+{% endif %}
+</svg>
+{%- endmacro %}

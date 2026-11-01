@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% from "icons.html" import icon %}
+{% block title %}Not found · AMORE GYM BRO{% endblock %}
+{% block body %}
+  <section class="card empty-state">
+    <span class="stat-symbol lavender">{{ icon('history') }}</span>
+    <p class="eyebrow">Saved training</p>
+    <h1>{{ heading or "That workout is not in the local copy" }}</h1>
+    <p class="lead">Open saved workouts to find another session.</p>
+    <a class="button" href="/">Back to saved workouts</a>
+  </section>
+{% endblock %}

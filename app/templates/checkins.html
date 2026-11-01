@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Check-ins{% endblock %}
+{% block body %}
+  <header>
+    <p class="eyebrow">Your own words</p>
+    <h1>Check-ins</h1><p class="lead">Log how you feel and what’s affecting your recovery.</p>
+  </header>
+  <p class="pill">{{ label }}</p>
+  <details class="disclosure"><summary>About your reports</summary><p class="meta">{{ notice }}</p></details>
+  {% if flash %}
+    <p class="banner" role="status">{{ flash }}</p>
+  {% endif %}
+  <form class="card" method="post" action="/check-ins">
+    <h2>How’s today feeling?</h2><p class="meta">Your report stays separate from saved Hevy workouts.</p>
+    <label for="feeling">How do you feel?</label>
+    <select id="feeling" name="feeling" required>
+      <option value="" selected disabled>Choose how you feel</option>
+      {% for feeling in feelings %}
+        <option value="{{ feeling }}">{{ feeling }}</option>
+      {% endfor %}
+    </select>
+    <label for="notes">Notes <span class="optional">Optional</span></label>
+    <textarea id="notes" name="notes" maxlength="1000" placeholder="Energy, recovery, or anything on your mind…"></textarea>
+    <button type="submit">Save check-in</button>
+  </form>
+  {% if check_ins %}
+    {% for item in check_ins %}
+      <section class="card">
+        <p class="pill">{{ label }}</p>
+        <h2>{{ item.feeling }}</h2>
+        {% if item.notes %}
+          <p class="saved-text">{{ item.notes }}</p>
+        {% endif %}
+        <p class="meta">Saved <time datetime="{{ item.created_at }}">{{ item.created_at }}</time></p>
+        <form method="post" action="/check-ins/{{ item.id }}/delete">
+          <button class="quiet" type="submit">Remove</button>
+        </form>
+      </section>
+    {% endfor %}
+  {% else %}
+    <section class="card">
+      <h2>No check-ins yet</h2>
+      <p>Save your first report using the form above.</p>
+    </section>
+  {% endif %}
+{% endblock %}

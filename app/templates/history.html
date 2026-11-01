@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Exercise history{% endblock %}
+{% block body %}
+  <header>
+    <p class="eyebrow">From saved workouts</p>
+    <h1>History</h1><p class="lead">Choose a period, then open an exercise to see your saved sets.</p>
+  </header>
+  {% include "period_selector.html" %}
+  <p class="pill">{{ confirmed }}</p>
+  <details class="disclosure history-notes"><summary>How saved history is calculated</summary><p class="meta">{{ notice }}</p><p class="meta">{{ volume_note }}</p><p class="meta">{{ record_note }}</p></details>
+  {% if flash %}
+    <p class="banner" role="status">{{ flash }}</p>
+  {% endif %}
+  <section class="card">
+    <h2>{{ period.title }}</h2>
+    <dl class="times">
+      <div>
+        <dt>Confirmed workouts</dt>
+        <dd>{{ totals.confirmed_workout_count }}</dd>
+      </div>
+      <div>
+        <dt>Working sets</dt>
+        <dd>{{ totals.working_set_count }}</dd>
+      </div>
+      <div>
+        <dt>Warm-up sets</dt>
+        <dd>{{ totals.warmup_set_count }}</dd>
+      </div>
+      <div>
+        <dt>Volume</dt>
+        <dd>{{ volume_line }}</dd>
+      </div>
+    </dl>
+    {% for gap in gaps %}
+      <p class="meta">{{ gap }}</p>
+    {% endfor %}
+  </section>
+  {% if exercises %}
+    <ul class="list">
+      {% for exercise in exercises %}
+        <li>
+          <a class="card link exercise-tile" href="/history/exercise?key={{ exercise.key | urlencode }}&amp;period={{ period.key }}">
+            <span class="title">{{ exercise.title }}</span>
+            <span class="meta">{{ period.record_label }}: {{ exercise.record_line }} · volume {{ exercise.volume_line }}</span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <section class="card">
+      <h2>No confirmed exercises{{ " yet" if period.key == "all" else " in this period" }}</h2>
+      <p>{{ "After a sync, exercises from workouts Hevy has saved will show up here." if period.key == "all" else "Try a wider period to see more of your saved training." }}</p>
+    </section>
+  {% endif %}
+{% endblock %}
+
+{% block scripts %}<script src="/static/history-period.js" defer></script>{% endblock %}

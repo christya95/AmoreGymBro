@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Database unavailable · AMORE GYM BRO{% endblock %}
+{% block body %}
+<section class="card empty-state">
+  <p class="eyebrow">Connection paused</p>
+  <h1>Your training data is temporarily unavailable</h1>
+  <p class="lead">The app cannot reach its private NAS database. Your saved data has not been replaced or reset.</p>
+  <p>Check that the NAS and database are running, then try again.</p>
+  <details class="disclosure"><summary>Using the Mac development app?</summary><p class="meta">Its private database tunnel may need reconnecting.</p></details>
+  <a class="button" href="{{ request.url.path }}">Try again</a>
+</section>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% from "icons.html" import icon %}
+{% block title %}Your daily brief · AMORE GYM BRO{% endblock %}
+{% block body_class %}home-page{% endblock %}
+{% block styles %}<link rel="stylesheet" href="/static/home.css?v=1">{% endblock %}
+{% block body %}
+  {% set brief = home_brief|default({}) %}
+  <header class="top dashboard-header">
+    <div>
+      {% if brief.date %}<p class="eyebrow brief-date" data-calendar-date="{{ brief.date }}">{{ brief.date_label or brief.date }}</p>{% endif %}
+      <h1>Your daily brief<span class="heading-dot">.</span></h1>
+    </div>
+    <form method="post" action="/logout"><button class="quiet signout" type="submit">Sign out</button></form>
+  </header>
+  {% if flash %}<p class="banner" role="status">{{ flash }}</p>{% endif %}
+
+  <section class="card today-card" aria-labelledby="today-title">
+    <div class="section-head">
+      <p class="eyebrow">{% if brief.has_plan %}Today · saved plan{% else %}Your training plan{% endif %}</p>
+      <span class="stat-symbol mint" aria-hidden="true">{{ icon('dumbbell') }}</span>
+    </div>
+    {% if brief.has_plan %}
+      {% if brief.today %}
+        <span class="pill today-pill">Scheduled · proposed training</span>
+        <h2 id="today-title">{{ brief.today.name }}</h2>
+        {% if brief.today.focus %}<p class="today-focus">{{ brief.today.focus }}</p>{% endif %}
+        <ul class="today-prescription" aria-label="Proposed session targets">
+          {% if brief.today.exercise_count is defined and brief.today.exercise_count is not none %}<li><strong>{{ brief.today.exercise_count }}</strong> exercises</li>{% endif %}
+          {% if brief.today.lifting_sets is defined and brief.today.lifting_sets is not none %}<li><strong>{{ brief.today.lifting_sets }}</strong> lifting sets</li>{% endif %}
+          {% if brief.today.cardio_minutes is defined and brief.today.cardio_minutes is not none and brief.today.cardio_minutes > 0 %}<li><strong>{{ brief.today.cardio_minutes }}</strong> cardio min</li>{% endif %}
+        </ul>
+      {% else %}
+        <h2 id="today-title">No session scheduled</h2>
+        {% if brief.next_session %}<p class="today-focus">Next{% if brief.next_session.day %}: {{ brief.next_session.day }}{% endif %}{% if brief.next_session.name %} · {{ brief.next_session.name }}{% endif %}{% if brief.next_session.date %} · <time datetime="{{ brief.next_session.date }}" data-date-only>{{ brief.next_session.date }}</time>{% endif %}</p>{% endif %}
+      {% endif %}
+      <div class="today-footer">
+        {% if brief.plan_name %}<p class="meta">{{ brief.plan_name }}</p>{% endif %}
+        <a class="button" href="/plan">View weekly plan {{ icon('arrow') }}</a>
+      </div>
+    {% else %}
+      <h2 id="today-title">Give your week a plan</h2>
+      <p class="today-focus">No saved plan yet. Start with your training details.</p>
+      <a class="button" href="/coach#routine">Set up your plan {{ icon('arrow') }}</a>
+    {% endif %}
+    {% if dashboard.check_in %}<p class="brief-report"><span>Your report</span> · {{ dashboard.check_in.feeling }}</p>{% endif %}
+  </section>
+
+  <div class="home-health-grid">
+    <section class="card weight-card" aria-labelledby="weight-title">
+      <div class="section-head"><div><p class="eyebrow">Hevy measurements</p><h2 id="weight-title">Body weight</h2></div><span class="stat-symbol lavender" aria-hidden="true">{{ icon('weight') }}</span></div>
+      <div class="metric-head">
+        <div><span class="metric-number">{{ dashboard.weight_line }}</span><p class="meta">{% if dashboard.weight_date %}Last saved weight · <time datetime="{{ dashboard.weight_date }}" data-date-only>{{ dashboard.weight_date }}</time>{% else %}No saved measurement yet{% endif %}</p></div>
+        {% if dashboard.chart.points|length > 1 and dashboard.chart.change is not none %}<span class="delta">{{ '%+.1f'|format(dashboard.chart.change) }} {{ dashboard.weight_unit }}<small>over shown period</small></span>{% endif %}
+      </div>
+      {% if dashboard.chart.points %}
+        <div class="chart-frame">
+          <svg class="weight-chart" viewBox="0 0 320 160" role="img" aria-label="Saved body weight. Exact measurements are available below; a trend requires at least two measurements.">
+            <defs><linearGradient id="weight-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#7c9dc7" stop-opacity=".24"/><stop offset="100%" stop-color="#7c9dc7" stop-opacity="0"/></linearGradient></defs>
+            <path class="chart-grid" d="M0 30H320 M0 75H320 M0 120H320"/>
+            {% if dashboard.chart.points|length > 1 and dashboard.chart.path %}<path d="{{ dashboard.chart.area }}" fill="url(#weight-fill)"/><path class="chart-line" d="{{ dashboard.chart.path }}"/>{% endif %}
+            {% for point in dashboard.chart.points %}<circle cx="{{ point.x }}" cy="{{ point.y }}" r="4" class="chart-point"><title>{{ point.date }}: {{ point.value }} {{ dashboard.weight_unit }}</title></circle>{% endfor %}
+          </svg>
+          <div class="chart-labels"><span>{{ dashboard.chart.first_label }}</span><span>{{ dashboard.chart.last_label if dashboard.chart.points|length > 1 else '1 saved measurement' }}</span></div>
+        </div>
+        {% if dashboard.chart.points|length == 1 %}<p class="meta">Your weight trend starts here. A second saved measurement will connect the dots.</p>{% endif %}
+        <details class="chart-data"><summary>View measurements</summary><ul>{% for point in dashboard.chart.points %}<li><time datetime="{{ point.date }}" data-date-only>{{ point.date }}</time> <strong>{{ point.value }} {{ dashboard.weight_unit }}</strong></li>{% endfor %}</ul></details>
+      {% else %}<div class="empty-chart">{{ icon('weight') }}<p>Your weight trend starts with a saved Hevy measurement.</p></div>{% endif %}
+      {% if dashboard.goal %}<div class="weight-goal"><span class="eyebrow">Your saved goal</span><p>{{ dashboard.goal.statement }}</p></div>{% endif %}
+    </section>
+    {% include "garmin_panel.html" %}
+  </div>
+
+  <section class="card training-card" aria-labelledby="training-title">
+    <div class="section-head"><div><p class="eyebrow">Confirmed in Hevy</p><h2 id="training-title">Training rhythm</h2></div><span class="stat-symbol lavender" aria-hidden="true">{{ icon('history') }}</span></div>
+    <p class="training-scope">All-time saved totals</p>
+    <dl class="training-totals">
+      <div><dt>Workouts</dt><dd>{{ dashboard.totals.confirmed_workout_count }}</dd></div>
+      <div><dt>Working sets</dt><dd>{{ dashboard.totals.working_set_count }}</dd></div>
+      <div><dt>Exercises</dt><dd>{{ dashboard.exercise_count }}</dd></div>
+    </dl>
+    <div class="training-chart-heading"><h3>Working-set volume</h3><p class="meta">{% if dashboard.sessions %}Latest {{ dashboard.sessions|length }} saved sessions{% else %}Recent saved sessions{% endif %}</p></div>
+    {% if dashboard.sessions %}
+      <div class="volume-chart" role="group" aria-label="Volume by confirmed session; select a bar to view the workout">
+        {% for session in dashboard.sessions %}<a class="volume-column" href="/workouts/{{ session.id }}" aria-label="{{ session.title }} · {{ session.label }} · {{ session.volume_line }}"><span class="bar-track"><span class="volume-bar" style="--bar-height: {{ session.height }}%"></span>{% if session.volume is none %}<span class="no-value">—</span>{% endif %}</span><span class="bar-label">{{ session.label }}</span></a>{% endfor %}
+      </div>
+      <p class="chart-note">Weight × reps, excluding warm-ups.{% if dashboard.missing_load %} Sets with missing loads or reps are excluded.{% endif %} Compare like-for-like sessions. Tap a bar for the saved workout.</p>
+      <details class="chart-data"><summary>View session volumes</summary><ul>{% for session in dashboard.sessions %}<li><a href="/workouts/{{ session.id }}">{{ session.label }} · {{ session.title }}</a><strong>{{ session.volume_line }}</strong></li>{% endfor %}</ul></details>
+    {% else %}<p class="meta training-empty">Your first saved session starts the chart.</p>{% endif %}
+  </section>
+
+  <details class="card home-sync" id="sync-details" {% if offset or not hevy_configured or state.last_error or state.last_warning or webhook_failed %}open{% endif %}>
+    <summary>
+      <span class="sync-summary-copy"><span class="sync-summary-title">Hevy library &amp; sync</span><span class="sync-summary-note">{% if not hevy_configured %}Hevy key needed{% elif state.last_error %}Hevy sync failed · view details{% elif state.last_warning %}Hevy sync warning · view details{% elif webhook_failed %}Saved-workout notices need attention{% elif state.last_success_at %}Workouts synced <time datetime="{{ state.last_success_at }}">{{ state.last_success_at }}</time>{% else %}No saved sync yet{% endif %}</span></span>
+      <span class="sync-indicator {% if not hevy_configured or state.last_error or state.last_warning or webhook_failed %}needs-attention{% endif %}" aria-hidden="true"></span>
+    </summary>
+    <div class="home-sync-body">
+      <section class="hevy-connection" aria-labelledby="hevy-title">
+        <div class="section-head"><div><h2 id="hevy-title">Hevy connection</h2><p class="meta">{% if state.last_success_at %}Last success <time datetime="{{ state.last_success_at }}">{{ state.last_success_at }}</time>{% else %}Waiting for your first sync{% endif %}</p></div>{{ icon('refresh') }}</div>
+        {% if not hevy_configured %}<h3>Hevy key needed</h3><p>Provide <code>HEVY_API_KEY</code> through 1Password when starting the app.</p>{% endif %}
+        {% if state.last_error %}<p class="banner bad" role="alert">{{ state.last_error }}</p>{% endif %}
+        {% if state.last_warning %}<p class="banner warn">{{ state.last_warning }}</p>{% endif %}
+        <p class="meta">Read-only sync of workouts and measurements already saved in Hevy.</p>
+        <form method="post" action="/sync"><button type="submit" {% if not hevy_configured %}disabled{% endif %}>{{ icon('refresh') }} Sync now</button></form>
+      </section>
+      <section class="home-workouts" aria-labelledby="routine-library-title">
+        <h2 id="routine-library-title">Routine templates</h2>
+        <p class="meta">Your reusable plans in Hevy, including every folder.</p>
+        <a class="button secondary" href="/hevy/routines">View Hevy routines {{ icon('arrow') }}</a>
+      </section>
+      <section class="home-workouts" aria-labelledby="saved-workouts-title">
+        <div class="section-head"><h2 id="saved-workouts-title">Completed workouts</h2><span class="subtle-label">Confirmed in Hevy</span></div>
+        <p class="meta">Sessions you finished and saved in Hevy. Routine templates appear above.</p>
+        {% if workouts %}<ul class="list workout-list">{% for workout in workouts %}<li><a class="card link workout-tile" href="/workouts/{{ workout.id }}"><span class="workout-icon" aria-hidden="true">{{ icon('dumbbell') }}</span><span class="workout-copy"><span class="title">{{ workout.title or "Untitled workout" }}</span><span class="meta">{% if workout.start_time %}<time datetime="{{ workout.start_time }}" data-date-only>{{ workout.start_time }}</time>{% else %}No start time{% endif %} · {{ workout.set_count }} logged sets</span></span>{{ icon('arrow') }}</a></li>{% endfor %}</ul>
+        {% else %}<div class="home-workouts-empty"><h3>No saved workouts yet</h3><p class="meta">After a sync, workouts Hevy has already saved will show up here.</p></div>{% endif %}
+        {% if has_newer or has_older %}<nav class="pager" aria-label="Workout pages">{% if has_newer %}<a href="/?offset={{ offset - page_size if offset > page_size else 0 }}#sync-details">Newer</a>{% endif %}{% if has_older %}<a href="/?offset={{ offset + page_size }}#sync-details">Older</a>{% endif %}</nav>{% endif %}
+        <details class="disclosure record-notice"><summary>About saved workouts</summary><p class="meta">{{ notice }}</p></details>
+      </section>
+      <details class="sync-details"><summary>Sync activity &amp; details</summary>
+        <dl class="times"><div><dt>Last success</dt><dd>{% if state.last_success_at %}<time datetime="{{ state.last_success_at }}">{{ state.last_success_at }}</time>{% else %}Not yet{% endif %}</dd></div><div><dt>Last attempt</dt><dd>{% if state.last_attempt_at %}<time datetime="{{ state.last_attempt_at }}">{{ state.last_attempt_at }}</time>{% else %}Not yet{% endif %}</dd></div><div><dt>Event cursor</dt><dd>{% if state.events_since %}<time datetime="{{ state.events_since }}">{{ state.events_since }}</time>{% else %}Full copy still needed{% endif %}</dd></div></dl>
+        {% if state.last_mode %}<p class="meta">Last run: {{ state.last_mode }}{% if state.remote_workout_count is not none %} · Hevy count {{ state.remote_workout_count }} · local active {{ state.local_workout_count }}{% endif %}</p>{% endif %}
+        {% if runs %}<ul class="runs">{% for run in runs %}<li><time datetime="{{ run.started_at }}">{{ run.started_at }}</time> · {{ run.mode }} · {{ run.status }} · {{ run.workouts_upserted }} updated · {{ run.workouts_deleted }} deleted</li>{% endfor %}</ul>{% endif %}
+        <h3>Saved-workout notices</h3><p class="meta">{{ webhook_notice }}</p>{% if webhook_failed %}<p class="banner bad">{{ webhook_failed }} saved-workout notice{% if webhook_failed != 1 %}s{% endif %} could not be fetched. Sync still checks for updates and deletions.</p>{% endif %}
+      </details>
+    </div>
+  </details>
+{% endblock %}

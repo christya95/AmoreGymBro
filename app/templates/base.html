@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f5f5f8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="AMORE GYM BRO">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>{% block title %}AMORE GYM BRO{% endblock %}</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/static/icon-180.png">
+  <link rel="stylesheet" href="/static/style.css?v=garmin-expanded-10">
+  {% block styles %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <main id="main-content">
+    {% block app_brand %}<div class="app-brand"><span class="brand-mark" aria-hidden="true">{% include "brand_logo.html" %}</span><p class="brand">Amore Gym Bro</p></div>{% endblock %}
+    {% if request.url.path != "/login" and request.url.path != "/setup" %}
+      {% include "nav.html" %}
+    {% endif %}
+    {% block body %}{% endblock %}
+  </main>
+  <script src="/static/local-time.js" defer></script>
+  <script src="/static/garmin-ui.js?v=1" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
