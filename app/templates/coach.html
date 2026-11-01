@@ -4,7 +4,7 @@
 {% block body_class %}coach-page{% endblock %}
 {% block body %}
   <header class="zeus-header">
-    <span class="zeus-orb zeus-avatar" aria-hidden="true">{{ icon('zeus') }}</span>
+    <span class="zeus-orb zeus-avatar" aria-hidden="true">{% include "zeus_avatar.html" %}</span>
     <div>
       <p class="eyebrow">In your corner</p>
       <h1>Proffessor Zeus</h1>
@@ -32,7 +32,7 @@
         </article>
         <article class="zeus-bubble zeus-bubble-coach" aria-labelledby="latest-answer-title" data-reply-id="{{ reply.reply_id }}" data-reply-status="{{ reply.status }}">
           <div class="zeus-bubble-heading">
-            <span class="zeus-orb zeus-avatar-small" aria-hidden="true">{{ icon('zeus') }}</span>
+            <span class="zeus-orb zeus-avatar-small" aria-hidden="true">{% include "zeus_avatar.html" %}</span>
             <div><p class="zeus-speaker">Proffessor Zeus</p><h3 id="latest-answer-title">Latest answer</h3></div>
           </div>
           <p class="zeus-message-text" data-typewriter>{{ reply.message }}</p>
