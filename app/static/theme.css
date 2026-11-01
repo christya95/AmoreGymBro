@@ -1,0 +1,73 @@
+/* Loaded after page styles so shared appearance also covers Home's custom cards. */
+.app-topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
+.app-topbar .app-brand { margin: 0; min-width: 0; }
+button.theme-toggle { flex-shrink: 0; width: 44px; height: 44px; min-height: 44px; padding: 10px; margin-left: auto; border-color: var(--secondary-line); background: var(--card); color: var(--secondary-ink); box-shadow: var(--shadow); }
+button.theme-toggle[hidden] { display: none; }
+button.theme-toggle:hover { background: var(--secondary-hover); border-color: var(--secondary-line); }
+button.theme-toggle:active { background: var(--secondary-pressed); border-color: var(--secondary-line); }
+.theme-sun { display: none; }
+[data-theme="dark"] .theme-sun { display: block; }
+[data-theme="dark"] .theme-moon { display: none; }
+.login-page .app-topbar { position: absolute; top: calc(18px + env(safe-area-inset-top)); right: calc(20px + env(safe-area-inset-right)); margin: 0; }
+.login-page { padding-top: calc(80px + env(safe-area-inset-top)); }
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111722; --card: rgba(29,39,54,.9); --line: rgba(196,211,235,.14);
+  --text: #edf2fa; --muted: #abb8ca; --accent: #b0cbf2;
+  --bad: #ffb1a9; --bad-bg: #482a30; --warn: #f2d69c; --warn-bg: #3f3627;
+  --shadow: 0 8px 30px #00000024, inset 0 1px 0 #ffffff06;
+  --nav-bg: rgba(22,31,46,.96); --nav-solid: #161f2e; --nav-line: #52627b;
+  --primary-bg: #b5cbed; --primary-ink: #152238; --primary-hover: #cedeF5; --primary-pressed: #9db7dd;
+  --secondary-bg: #2b3b52; --secondary-ink: #d2e0f5; --secondary-hover: #374b67; --secondary-pressed: #405776; --secondary-line: #4b607d;
+  --focus-ring: #b5d2ff;
+  --surface: #202c3f; --field: #172131; --mint-bg: #243d39; --mint-ink: #b0dac7;
+  --lavender-bg: #34344d; --lavender-ink: #d1c4f1; --peach-bg: #453931; --peach-ink: #edc6ac;
+}
+html[data-theme="dark"] body { background: radial-gradient(ellipse at 0 0, #263c5055, transparent 38rem), radial-gradient(ellipse at 100% 38%, #37334d33, transparent 35rem), var(--bg); }
+html[data-theme="dark"] :is(.card, .zeus-bubble, .saved-profile-grid > div, .daily-macro-tile, .zeus-next-step, .zeus-workout-links a, .zeus-composer, .zeus-uncertainty, .zeus-empty-note, .volume-chart, .zeus-model-needed) { border-color: var(--line); }
+html[data-theme="dark"] :is(.home-page .card, .zeus-chat.card, .plan-swap, .goal-card, .coach-card) { background: var(--card); border-color: var(--line); box-shadow: var(--shadow); }
+html[data-theme="dark"] :is(.home-page .today-card, .zeus-chat.card) { background: radial-gradient(ellipse at 0 0, #56748d26, transparent 30rem), var(--card); }
+html[data-theme="dark"] .home-page #garmin { background: radial-gradient(ellipse at 100% 0, #3c6c5626, transparent 28rem), var(--card); }
+html[data-theme="dark"] :is(input, textarea, select, .zeus-composer textarea) { background: var(--field); border-color: var(--secondary-line); color: var(--text); box-shadow: none; }
+html[data-theme="dark"] :is(input, textarea)::placeholder { color: #9babc1; opacity: 1; }
+html[data-theme="dark"] :is(.brand-mark, .login-symbol, .workout-icon, .goal-icon, .saved-profile-grid > div, .zeus-bubble-coach, .zeus-next-step, .zeus-workout-links a, .zeus-on-demand, .status-chip, .home-page .list .workout-tile) { background: var(--surface); border-color: var(--line); color: var(--secondary-ink); }
+html[data-theme="dark"] :is(.brand, .login-header .login-wordmark, .card h2, .plan-prescription, .saved-profile-grid dd, .daily-macro-tile strong, .exercise-tile .title, .garmin-detail-readings dd, .metric-number, .training-totals dd, .today-prescription strong, .checkin-prompt, .home-page .training-chart-heading h3) { color: var(--text); }
+html[data-theme="dark"] .home-page #garmin .garmin-metrics dd { color: var(--text); }
+html[data-theme="dark"] :is(.card .meta, .eyebrow, .card .eyebrow, .subtle-label, .section-head .subtle-label, .optional, .login-card label, .period-caption, .disclosure, .setup-steps, .profile-details small, .saved-profile-grid dt, .daily-macro-tile dt, .macro-label, .macro-unit, .daily-macro-tile dd span, .garmin-detail-readings dt, .chart-labels, .chart-note, .chart-data, .bar-label, .no-value, .empty-chart, .delta, .delta small, .overview-stats > div > span:last-child, .checkin-prompt div span) { color: var(--muted); }
+html[data-theme="dark"] :is(.home-page .brief-date, .home-page .today-focus, .home-page .today-prescription, .home-page .brief-report, .home-page .training-scope, .home-page .training-totals dt, .home-page .sync-summary-note, .home-page .sync-details, .home-page .chart-data, .home-page .chart-note, .home-page .chart-labels) { color: var(--muted); }
+html[data-theme="dark"] :is(.zeus-exchange-note, .zeus-bubble-heading h3, .zeus-welcome > p:not([class]), .zeus-empty-note, .zeus-reply-list, .zeus-uncertainty, .zeus-input-note, .zeus-cost-note, .zeus-disclosure, .zeus-details small, .zeus-submit-status) { color: var(--muted); }
+html[data-theme="dark"] :is(.disclosure > summary, .profile-details > summary, .zeus-details > summary, .zeus-disclosure summary, .profile-edit-link, .chart-data a, .chart-data strong, .text-link, .home-page .sync-summary-title, .zeus-speaker) { color: var(--secondary-ink); }
+html[data-theme="dark"] :is(.brand-mark, .login-symbol) { border-color: var(--secondary-line); }
+html[data-theme="dark"] :is(.mint, .pill, .profile-saved-at, .home-page .today-pill, .home-page .today-card .stat-symbol) { background: var(--mint-bg); color: var(--mint-ink); border-color: var(--line); }
+html[data-theme="dark"] :is(.lavender, .report-pill, .macro-waiting) { background: var(--lavender-bg); color: var(--lavender-ink); border-color: var(--line); }
+html[data-theme="dark"] .peach { background: var(--peach-bg); color: var(--peach-ink); }
+html[data-theme="dark"] .estimate-pill { background: #2b3b55; color: #c0d5f5; }
+html[data-theme="dark"] .daily-macro-tile { background: #28394f; }
+html[data-theme="dark"] .daily-macro-tile:nth-child(2) { background: var(--lavender-bg); }
+html[data-theme="dark"] .daily-macro-tile:nth-child(3) { background: var(--mint-bg); }
+html[data-theme="dark"] .daily-macro-tile:nth-child(4) { background: var(--peach-bg); }
+html[data-theme="dark"] .home-page .weight-goal { background: var(--lavender-bg); border-color: var(--line); }
+html[data-theme="dark"] .home-page .weight-goal :is(p, .eyebrow) { color: var(--lavender-ink); }
+html[data-theme="dark"] :is(.home-page .brief-report, .home-page .training-totals, .home-page .training-totals > div, .home-page .hevy-connection, .home-page .sync-details) { border-color: var(--line); }
+html[data-theme="dark"] .home-page .signout { background: var(--secondary-bg); border-color: var(--secondary-line); }
+html[data-theme="dark"] .home-page .sync-indicator.needs-attention { background: var(--warn); box-shadow: 0 0 0 4px var(--warn-bg); }
+html[data-theme="dark"] .banner { background: var(--mint-bg); border-color: var(--line); color: var(--mint-ink); }
+html[data-theme="dark"] .banner.bad { background: var(--bad-bg); color: var(--bad); }
+html[data-theme="dark"] .banner.warn { background: var(--warn-bg); color: var(--warn); }
+html[data-theme="dark"] .zeus-bubble-user { background: #334e72; border-color: #58779b; }
+html[data-theme="dark"] .zeus-bubble-user .zeus-speaker { color: #d3dfef; }
+html[data-theme="dark"] :is(.zeus-orb, .zeus-avatar) { background: linear-gradient(145deg, #3e5275, #26364f); color: #c3d9ff; border-color: var(--line); box-shadow: var(--shadow); }
+html[data-theme="dark"] .skip-link { background: var(--surface); }
+html[data-theme="dark"] .chart-grid { stroke: var(--line); }
+html[data-theme="dark"] .chart-line { stroke: #a7c9f4; }
+html[data-theme="dark"] .chart-point { fill: #a7c9f4; stroke: var(--surface); }
+html[data-theme="dark"] :is(.bar-track, .home-page .bar-track) { background: #0f19294d; }
+html[data-theme="dark"] :is(.volume-bar, .home-page .volume-bar) { background: linear-gradient(#b2a6db, #706590); }
+html[data-theme="dark"] :is(.volume-column:last-child .volume-bar, .home-page .volume-column:last-child .volume-bar) { background: linear-gradient(#a2c8e0, #537798); }
+@media (hover: hover) {
+  html[data-theme="dark"] .list a.link:hover { background: var(--surface); border-color: var(--secondary-line); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  html[data-theme="dark"] :is(.card, .home-page .card, .home-page #garmin, .zeus-chat.card, .zeus-bubble-coach) { background: #1d2736; }
+}

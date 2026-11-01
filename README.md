@@ -18,6 +18,8 @@ Training receipts, watch readings and goals—with **Proffessor Zeus**, your sci
 
 No Mac, SSH or vault unlock needed. Away from home, connect the iPhone's Tailscale VPN and open the private HTTPS app address. [Remote access and verification](docs/remote-access.md)
 
+🌙 Use the top-right moon/sun button for dark or light mode. It follows your device until you choose, then remembers your preference in that browser.
+
 ## Install
 
 🛠️ **Fresh, isolated development copy:** Python **3.12**, `uv`, Docker Compose and 1Password CLI with desktop integration. Leave the NAS deployment untouched.

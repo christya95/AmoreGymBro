@@ -43,6 +43,8 @@ Read [.agents/skills/amore-gym-bro/SKILL.md](.agents/skills/amore-gym-bro/SKILL.
 
 - Keep the shared barbell logo, Bevel-inspired light glass/pastel style, dark slate navigation/period slider and white selection.
   Verify iPhone Safari readability. Center login branding, not all page content; scope Home styling to Home.
+- Shared `theme.js`/`theme.css` provide the top-right light/dark toggle, including login. Default to device appearance until a saved browser
+  choice overrides it. Preserve readable dark cards/forms/charts, accessible toggle state, native control colors and Safari theme-color.
 - Explain purpose/next action; distinguish saved profile, edit form, estimated daily macros and completed history.
   Show provenance, saved/sync timestamps and usable empty/error states; operational failures remain discoverable when disclosures collapse.
 - Bottom menu owns global navigation. Use native collapsible Zeus/plan cards, short copy and disclosures for longer guidance.

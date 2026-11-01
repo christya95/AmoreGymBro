@@ -9,6 +9,8 @@ Read the project's `AGENTS.md` for current deployment paths and invariants. One 
 
 Use shared branding, light glass/pastel cards and slate controls with white selection. Show the purpose, data origin, saved/sync date and next action. Keep profile summaries separate from edit forms and completed workout history. Verify usable iPhone-width layouts and error states.
 
+The shared top-right appearance toggle supports dark slate glass surfaces as well as the light theme, including login. Respect device appearance until the user saves a browser preference; preserve contrast, accessible state and native form colors in both modes. Theme assets are `app/static/theme.js` and `theme.css`.
+
 Ground Zeus with the existing read-only LangChain retrieval tools, not arbitrary MongoDB queries or model-held credentials. The profile tool includes reported body/schedule details, confirmed saved weight and calculated macros. Exact-ID workout lookup caps detail at six exercises/24 sets, omits deleted/raw documents and reports truncation; full-session totals remain app-calculated. No model write/delete tools or extra vector service.
 
 `app/persona.py` owns Zeus's short comedic frat-gym-bro voice: The user is Big Dawg; women are baddies. Use original short gym jokes, supportive hype and occasional emojis; avoid canned motivational-chatbot phrasing. Never sacrifice science, invent observations, shame the user or encourage training through pain. Do not generate a second response solely for style.
