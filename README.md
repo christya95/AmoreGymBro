@@ -16,7 +16,7 @@ Training receipts, watch readings and goals—with **Proffessor Zeus**, your sci
 - **Check-ins:** how you feel; **Zeus:** questions and adjustments.
 - **Weekly plan:** proposed sets, reps and trial loads—not completed lifts.
 
-No Mac, SSH or vault unlock needed. Private authenticated gym/cellular access remains unconfigured.
+No Mac, SSH or vault unlock needed. Away from home, connect the iPhone's Tailscale VPN and open the private HTTPS app address. [Remote access and verification](docs/remote-access.md)
 
 ## Install
 

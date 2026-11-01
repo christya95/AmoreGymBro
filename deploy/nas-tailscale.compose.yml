@@ -1,0 +1,37 @@
+# Optional production overlay; always load alongside nas-coach.compose.yml.
+services:
+  tailscale:
+    image: tailscale/tailscale:v1.104.4
+    network_mode: service:coach
+    depends_on:
+      coach:
+        condition: service_healthy
+        restart: true
+    environment:
+      TS_HOSTNAME: amoregymbro
+      TS_USERSPACE: "true"
+      TS_AUTH_ONCE: "true"
+      # Allow time for the user's interactive first-device authorization.
+      TS_BOOT_TIMEOUT: 10m
+      TS_ACCEPT_DNS: "false"
+      TS_EXTRA_ARGS: --accept-routes=false --ssh=false
+      TS_STATE_DIR: /var/lib/tailscale
+      TS_SERVE_CONFIG: /config/serve.json
+    volumes:
+      - amoregymbro_tailscale_nas_state:/var/lib/tailscale
+      - ./tailscale:/config:ro
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD-SHELL, "tailscale status --json | grep -q '\"BackendState\": \"Running\"'"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    # First-login URLs are credentials: inspect status privately, never Docker logs.
+    logging:
+      driver: none
+    restart: unless-stopped
+volumes:
+  amoregymbro_tailscale_nas_state:
+    name: amoregymbro_tailscale_nas_state

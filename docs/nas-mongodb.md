@@ -17,7 +17,7 @@ The old Mac MongoDB on Mac port **27018** and the retained SQLite database are f
 
 ## 🚀 Current operation
 
-Open **http://192.168.2.49:8787** on your home network. Sign in with the app password; normal use needs no Mac, SSH or unlocked vault. Safari can add it to the iPhone Home Screen. The app's sign-in session lasts up to 30 days unless you sign out. Cellular/gym access still needs private authenticated remote access; the LAN URL alone does not provide that.
+Open **http://192.168.2.49:8787** on your home network. Sign in with the app password; normal use needs no Mac, SSH or unlocked vault. Safari can add it to the iPhone Home Screen. The app's sign-in session lasts up to 30 days unless you sign out. Away from home, use the private HTTPS address with Tailscale connected; see [remote access](remote-access.md). The LAN URL alone does not work remotely.
 
 The coach connects directly to MongoDB over the private Docker network. This was verified by disconnecting the Mac database tunnel and loading all main authenticated pages. NAS coach and MongoDB restarts preserved saved records. The Mac production-like development server is stopped; production owns scheduled Hevy sync.
 
@@ -29,16 +29,19 @@ cd /home/Joss/AmoreGymBro
 ./start-coach.sh
 ```
 
-Both use the protected project service-account token and official CLI to resolve only required 1Password references. `start-coach.sh` uses `nas-coach.compose.yml` and `.env.coach`; it joins the existing external database network and does not recreate MongoDB. Source lives in `source/`; image `amoregymbro-coach:local` was built on the NAS. Repository templates are `deploy/nas-coach.compose.yml` and `deploy/nas-mongodb.compose.yml`. Keep their shared network and explicit volume names stable.
+Both use the protected project service-account token and official CLI to resolve only required 1Password references. `start-coach.sh` loads the coach and Tailscale overlay with `.env.coach`, recreating both containers together; it joins the existing external database network and does not recreate MongoDB. Its source template is `deploy/start-nas-coach.sh`. Source lives in `source/`; image `amoregymbro-coach:local` was built on the NAS. Repository templates are `deploy/nas-coach.compose.yml`, `deploy/nas-tailscale.compose.yml` and `deploy/nas-mongodb.compose.yml`. Keep their shared network and explicit volume names stable.
 
 For an ordinary restart, without resolving secrets again:
 
 ```bash
+docker stop amoregymbro-nas-tailscale-1
 docker restart amoregymbro-nas-coach-1
 docker inspect --format '{{.State.Health.Status}}' amoregymbro-nas-coach-1
+# After the coach is healthy:
+docker start amoregymbro-nas-tailscale-1
 ```
 
-The app's health check verifies database access. Wait for healthy, then check existing records through the app. Restarting `amoregymbro-nas-mongodb-1` preserves its volume too. Do not print full container inspection or resolved Compose configuration: they include credentials. These commands require NAS management access, not normal phone use.
+The app's health check verifies database access. Wait for healthy, then check existing records and private HTTPS. A replacement coach requires sidecar recreation through the launcher, not just a restart. Restarting `amoregymbro-nas-mongodb-1` preserves its volume too. Do not print full container inspection or resolved Compose configuration: they include credentials. These commands require NAS management access, not normal phone use.
 
 ## 🚇 Private tunnel and SSH
 

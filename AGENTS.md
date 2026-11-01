@@ -133,7 +133,12 @@ Read [.agents/skills/amore-gym-bro/SKILL.md](.agents/skills/amore-gym-bro/SKILL.
 - NAS service account is read-only, project-vault-only, cannot read Personal and uses a protected bootstrap token. Renew before its actual
   89-day expiry; running containers survive vault lock/token expiry, but secret resolution for recreation requires valid access.
 - Keep NAS administration, SMB, Docker and MongoDB private; no UGREENLink, DDNS or router forwarding. Gym/cellular access requires separately
-  verified private authentication. Exact containers, paths, volumes, backups and recovery: [docs/nas-mongodb.md](docs/nas-mongodb.md).
+  verified private authentication. Tailscale Serve is the private app path, never Funnel, a subnet router, exit node or Tailscale SSH.
+  The userspace helper shares only the coach network namespace and retains its identity in `amoregymbro_tailscale_nas_state` (private keys).
+  Recreate coach/helper together through `deploy/start-nas-coach.sh`; do not replace coach alone. Preserve existing tailnet rules and app login;
+  verify HTTPS after restart and ask for a real iPhone cellular check before claiming it works remotely. Keep device authorization URLs out of
+  logs, screenshots, chat and Git; no persistent auth key is required. See [remote access](docs/remote-access.md).
+  Exact containers, paths, volumes, backups and recovery: [docs/nas-mongodb.md](docs/nas-mongodb.md).
 
 ## Validation and reusable guidance
 
