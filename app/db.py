@@ -858,6 +858,7 @@ class Database:
         body["question"] = row["question"]
         body["status"] = row["status"]
         body["created_at"] = row["created_at"]
+        body["reply_id"] = row["id"]
         return body
 
     def latest_training_plan(self) -> dict | None:

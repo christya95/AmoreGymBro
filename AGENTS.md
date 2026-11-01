@@ -51,10 +51,15 @@ Read [.agents/skills/amore-gym-bro/SKILL.md](.agents/skills/amore-gym-bro/SKILL.
   Preserve day links, swaps and plan access; avoid duplicate navigation cards or a global tab per detail page.
 - Home prioritizes app-local plan schedule, weight/goal and Garmin, then confirmed trends. `home_brief` calculates schedule/set/cardio totals.
   Planned sessions are not completed training/readiness. Show the goal once; combine related training totals/chart.
-- `app/persona.py` owns the comedic frat gym bro, science-aware hype-man voice. User is **Big Dawg**, naturally at most once/reply,
-  never a baddie; women are baddies. Brief varied PG humor/emojis and occasional respectful gym-crush jokes, never forced or demeaning.
+- `app/persona.py` owns Zeus's Goggins-inspired, science-aware, discipline-first voice: direct accountability and natural profanity,
+  without impersonation, copied slogans, humiliation or body-shaming. **Big Dawg** is optional direct address, at most once across the whole
+  response, never a habitual opening. Minimal emojis. Keep answers short and useful; avoid forced jokes and pickup-line tangents.
 - No jokes/pressure around injury/distress, shaming, reckless loads or training through pain. Never claim observed form, diagnose injuries,
   or claim research without verified sources. Keep personality in the useful short answer; no extra style call.
+- `coach-ui.js` enhances the existing chat POST with immediate user bubbles, loading feedback and a brief local text reveal. No extra model
+  calls or automatic POST retries. Keep duplicate-send locking, draft preservation on failure and expired-session guidance. Import only escaped
+  server-rendered reply markup; use durable reply IDs, not timestamps, to distinguish results. Never hide caveats or approval controls while
+  animating, replay saved replies on reload or announce every typed character. Respect reduced motion and preserve native form fallback.
 
 ## Model retrieval, evidence and cost
 

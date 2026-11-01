@@ -8,12 +8,14 @@
     <div>
       <p class="eyebrow">In your corner</p>
       <h1>Proffessor Zeus</h1>
-      <p class="lead">A little science. A little gym bro.</p>
+      <p class="lead">Know the plan. Do the work.</p>
     </div>
   </header>
+  <div id="coach-notice">
   {% if flash %}
     <p class="banner" role="status">{{ flash }}</p>
   {% endif %}
+  </div>
 
   <details class="card zeus-chat zeus-details" id="zeus-chat" open>
     <summary class="zeus-chat-heading">
@@ -28,16 +30,16 @@
           <p class="zeus-speaker">You asked</p>
           <p class="zeus-message-text">{{ reply.question }}</p>
         </article>
-        <article class="zeus-bubble zeus-bubble-coach" aria-labelledby="latest-answer-title">
+        <article class="zeus-bubble zeus-bubble-coach" aria-labelledby="latest-answer-title" data-reply-id="{{ reply.reply_id }}" data-reply-status="{{ reply.status }}">
           <div class="zeus-bubble-heading">
             <span class="zeus-orb zeus-avatar-small" aria-hidden="true">{{ icon('zeus') }}</span>
             <div><p class="zeus-speaker">Proffessor Zeus</p><h3 id="latest-answer-title">Latest answer</h3></div>
           </div>
-          <p class="zeus-message-text">{{ reply.message }}</p>
+          <p class="zeus-message-text" data-typewriter>{{ reply.message }}</p>
           {% if reply.suggested_action %}
-            <div class="zeus-next-step">
+            <div class="zeus-next-step zeus-suggested-action">
               <h3>Suggested action</h3>
-              <p class="zeus-message-text">{{ reply.suggested_action }}</p>
+              <p class="zeus-message-text" data-typewriter>{{ reply.suggested_action }}</p>
             </div>
           {% endif %}
           {% if reply.plan_suggestion %}
@@ -102,8 +104,8 @@
       {% else %}
         <div class="zeus-bubble zeus-bubble-coach zeus-welcome">
           <p class="zeus-speaker">Proffessor Zeus</p>
-          <p class="zeus-welcome-title">Big Dawg, what’s the situation? ⚡</p>
-          <p>We’re chasing PRs, not your ex. Drop the question before a baddie asks to work in and you forget how to count. 💪</p>
+          <p class="zeus-welcome-title">What needs work, Big Dawg?</p>
+          <p>Bring the question. We’ll turn it into a clear next step.</p>
           <p class="zeus-empty-note">No question yet. Start with the box below.</p>
         </div>
       {% endif %}
@@ -135,7 +137,7 @@
         </ul>
         <p>The Hevy API key, the page password, and the cookie secret are not sent.</p>
       </details>
-      <button type="submit" class="zeus-ask">{{ icon('zeus') }}<span data-coach-button-label>Ask Proffessor Zeus</span></button>
+      <button type="submit" class="zeus-ask">{{ icon('zeus') }}<span class="zeus-spinner" data-coach-spinner aria-hidden="true" hidden></span><span data-coach-button-label>Ask Proffessor Zeus</span></button>
       <p class="zeus-submit-status" role="status" aria-live="polite" data-coach-status></p>
     </form>
     </div>
@@ -168,11 +170,11 @@
         <p class="meta">Selected PubMed references are checked first and cached for up to a day. Only public article IDs go to PubMed; your personal details do not. Unavailable or invalid references stop drafting before the model is called.</p>
       </details>
       <form method="post" action="/coach/routine" data-coach-form data-button-label="Draft a weekly outline">
-        <button type="submit"><span data-coach-button-label>Draft a weekly outline</span></button>
+        <button type="submit"><span class="zeus-spinner" data-coach-spinner aria-hidden="true" hidden></span><span data-coach-button-label>Draft a weekly outline</span></button>
         <p role="status" aria-live="polite" data-coach-status></p>
       </form>
     </div>
   </details>
   {% endif %}
 {% endblock %}
-{% block scripts %}<script src="/static/profile-details.js" defer></script><script src="/static/coach-ui.js?v=zeus-chat-1" defer></script>{% endblock %}
+{% block scripts %}<script src="/static/profile-details.js" defer></script><script src="/static/coach-ui.js?v=zeus-chat-2" defer></script>{% endblock %}

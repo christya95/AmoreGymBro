@@ -63,7 +63,7 @@ A private Docker network connects app/database. Keep administration, SMB, Docker
 
 ### ⚡ How Zeus answers
 
-LangChain’s `create_agent` uses bounded **read-only tools** for profile/macros, workouts, exercise history/options, plans and relevant Garmin summaries. `ToolStrategy(CoachReply)` structures replies; code validates numbers, claims and proposals. The shared persona supplies brief gym-buddy humor, dropping jokes for injury/distress. Zeus cannot observe form or diagnose injuries.
+LangChain’s `create_agent` uses bounded **read-only tools** for profile/macros, workouts, exercise history/options, plans and relevant Garmin summaries. `ToolStrategy(CoachReply)` structures replies; code validates numbers, claims and proposals. Zeus uses blunt, discipline-first coaching with occasional profanity, switching to calm support for injury/distress. He cannot observe form or diagnose injuries.
 
 ```mermaid
 sequenceDiagram
@@ -97,7 +97,7 @@ A new outline takes **one model call**; it doesn’t rebuild the detailed plan. 
 - Small context slices; Garmin defaults to three days, maximum seven, filtered by metric group.
 - Python calculates metrics/macros. Model responses cap at **700 tokens**; chat has an **eight-step** agent limit and may make multiple paid calls.
 - **24-hour public research cache**; reuse the latest valid outline when inputs/evidence/model/persona match. Chat answers aren’t cached.
-- No separate personality, extraction, formatting, approval or sync inference.
+- No separate personality, extraction, formatting, approval or sync inference. Loading, send and typing effects run locally; they add no model calls.
 
 Summaries/notes reach the cloud; credentials/raw sensor streams don’t. API usage has separate billing. Zeus spots your wallet. 🏋️
 

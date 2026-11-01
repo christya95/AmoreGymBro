@@ -157,6 +157,22 @@ def test_route_pass_retains_forms_and_escapes_latest_reply(tmp_path):
     assert client.get("/history/exercise?key=unknown").status_code == 404
 
 
+def test_chat_identifies_new_saved_replies_even_with_the_same_timestamp(tmp_path):
+    client, app = signed_in(tmp_path)
+    body = {"message": "Saved answer", "suggested_action": "Keep it easy."}
+    saved_at = "2026-11-01T10:00:00Z"
+    app.state.db.save_coach_reply(saved_at, "answered", "Same question", body)
+    first = app.state.db.latest_coach_reply()["reply_id"]
+    html = client.get("/coach").text
+    assert f'data-reply-id="{first}"' in html
+    assert 'zeus-suggested-action' in html
+    assert client.get("/coach").text == html
+    app.state.db.save_coach_reply(saved_at, "answered", "Same question", body)
+    second = app.state.db.latest_coach_reply()["reply_id"]
+    assert second != first
+    assert f'data-reply-id="{second}"' in client.get("/coach").text
+
+
 def test_login_and_setup_keep_brand_and_never_request_secret_entry(tmp_path):
     client = TestClient(create_app(settings(tmp_path)))
     login = client.get("/login")
@@ -251,7 +267,7 @@ def test_zeus_avoids_duplicate_navigation_and_keeps_disclosure(tmp_path):
 def test_zeus_welcome_is_static_and_plan_outline_does_not_claim_updates(tmp_path):
     client, _ = signed_in(tmp_path)
     html = client.get("/coach").text
-    assert "Big Dawg" in html and "💪" in html
+    assert "Big Dawg" in html
     assert "No question yet. Start with the box below." in html
     assert "Your latest question and answer" not in html
     assert "does not automatically edit your saved weekly plan" in html

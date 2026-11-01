@@ -23,6 +23,7 @@ html[data-theme="dark"] {
   --focus-ring: #b5d2ff;
   --surface: #202c3f; --field: #172131; --mint-bg: #243d39; --mint-ink: #b0dac7;
   --lavender-bg: #34344d; --lavender-ink: #d1c4f1; --peach-bg: #453931; --peach-ink: #edc6ac;
+  --zeus-action-bg: linear-gradient(135deg, #3d3353, #2e3b54); --zeus-action-line: #76668f; --zeus-action-ink: #eee4ff;
 }
 html[data-theme="dark"] body { background: radial-gradient(ellipse at 0 0, #263c5055, transparent 38rem), radial-gradient(ellipse at 100% 38%, #37334d33, transparent 35rem), var(--bg); }
 html[data-theme="dark"] :is(.card, .zeus-bubble, .saved-profile-grid > div, .daily-macro-tile, .zeus-next-step, .zeus-workout-links a, .zeus-composer, .zeus-uncertainty, .zeus-empty-note, .volume-chart, .zeus-model-needed) { border-color: var(--line); }
@@ -31,7 +32,9 @@ html[data-theme="dark"] :is(.home-page .today-card, .zeus-chat.card) { backgroun
 html[data-theme="dark"] .home-page #garmin { background: radial-gradient(ellipse at 100% 0, #3c6c5626, transparent 28rem), var(--card); }
 html[data-theme="dark"] :is(input, textarea, select, .zeus-composer textarea) { background: var(--field); border-color: var(--secondary-line); color: var(--text); box-shadow: none; }
 html[data-theme="dark"] :is(input, textarea)::placeholder { color: #9babc1; opacity: 1; }
-html[data-theme="dark"] :is(.brand-mark, .login-symbol, .workout-icon, .goal-icon, .saved-profile-grid > div, .zeus-bubble-coach, .zeus-next-step, .zeus-workout-links a, .zeus-on-demand, .status-chip, .home-page .list .workout-tile) { background: var(--surface); border-color: var(--line); color: var(--secondary-ink); }
+html[data-theme="dark"] :is(.brand-mark, .login-symbol, .workout-icon, .goal-icon, .saved-profile-grid > div, .zeus-bubble-coach, .zeus-workout-links a, .zeus-on-demand, .status-chip, .home-page .list .workout-tile) { background: var(--surface); border-color: var(--line); color: var(--secondary-ink); }
+html[data-theme="dark"] .zeus-next-step { background: var(--surface); }
+html[data-theme="dark"] .zeus-next-step.zeus-suggested-action { background: var(--zeus-action-bg); border-color: var(--zeus-action-line); color: var(--zeus-action-ink); }
 html[data-theme="dark"] :is(.brand, .login-header .login-wordmark, .card h2, .plan-prescription, .saved-profile-grid dd, .daily-macro-tile strong, .exercise-tile .title, .garmin-detail-readings dd, .metric-number, .training-totals dd, .today-prescription strong, .checkin-prompt, .home-page .training-chart-heading h3) { color: var(--text); }
 html[data-theme="dark"] .home-page #garmin .garmin-metrics dd { color: var(--text); }
 html[data-theme="dark"] :is(.card .meta, .eyebrow, .card .eyebrow, .subtle-label, .section-head .subtle-label, .optional, .login-card label, .period-caption, .disclosure, .setup-steps, .profile-details small, .saved-profile-grid dt, .daily-macro-tile dt, .macro-label, .macro-unit, .daily-macro-tile dd span, .garmin-detail-readings dt, .chart-labels, .chart-note, .chart-data, .bar-label, .no-value, .empty-chart, .delta, .delta small, .overview-stats > div > span:last-child, .checkin-prompt div span) { color: var(--muted); }

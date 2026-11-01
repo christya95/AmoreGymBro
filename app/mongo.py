@@ -346,7 +346,7 @@ class MongoDatabase:
         row = self.db.coach_replies.find_one({'status': {'$nin': ['hevy_publication', 'plan_suggestion']}}, sort=[('_id', DESCENDING)])
         if row is None:
             return None
-        return {**json.loads(row['body_json']), 'question': row['question'], 'status': row['status'], 'created_at': row['created_at']}
+        return {**json.loads(row['body_json']), 'question': row['question'], 'status': row['status'], 'created_at': row['created_at'], 'reply_id': row['id']}
 
     def latest_training_plan(self):
         row = self.db.coach_replies.find_one({'status': 'plan_draft'}, sort=[('_id', DESCENDING)])

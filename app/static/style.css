@@ -448,6 +448,29 @@ body { min-height: 100svh; }
 .garmin-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; align-items: start; }
 .garmin-actions .button, .garmin-actions button { width: 100%; min-height: 48px; margin: 0; }
 .garmin-actions form { margin: 0; }
+
+/* Fresh chat exchanges animate locally, without extra inference or saved animation state. */
+:root {
+  --zeus-action-bg: linear-gradient(135deg, #f0e9fb, #e7eefb);
+  --zeus-action-line: #cfc3e7;
+  --zeus-action-ink: #403a5c;
+}
+.zeus-suggested-action { background: var(--zeus-action-bg); border-color: var(--zeus-action-line); color: var(--zeus-action-ink); }
+.zeus-suggested-action h3 { color: inherit; }
+.zeus-spinner { display: inline-block; flex-shrink: 0; width: 16px; height: 16px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: zeus-spin .75s linear infinite; }
+.zeus-spinner[hidden] { display: none; }
+.zeus-pending { display: flex; align-items: center; gap: 10px; min-height: 52px; color: var(--muted); }
+.zeus-pending p { margin: 0; }
+.zeus-bubble-user.is-sending { transform-origin: bottom right; animation: zeus-send .28s cubic-bezier(.2,.8,.3,1) both; }
+.zeus-bubble-coach.is-arriving { animation: zeus-arrive .24s ease-out both; }
+[data-reply-id] { scroll-margin-top: 20px; }
+.zeus-readable { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@keyframes zeus-spin { to { transform: rotate(360deg); } }
+@keyframes zeus-send { from { opacity: .35; transform: translateY(14px) scale(.94); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes zeus-arrive { from { opacity: .35; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .zeus-spinner, .zeus-bubble-user.is-sending, .zeus-bubble-coach.is-arriving { animation: none; }
+}
 .garmin-sync-progress:empty { display: none; }
 .garmin-day .garmin-metrics dd { font-size: clamp(.9rem, 3.7vw, 1.35rem); }
 @media (max-width: 420px) { .garmin-actions { grid-template-columns: 1fr; } }
