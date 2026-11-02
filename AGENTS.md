@@ -147,6 +147,9 @@ Read [.agents/skills/amore-gym-bro/SKILL.md](.agents/skills/amore-gym-bro/SKILL.
   verify HTTPS after restart and ask for a real iPhone cellular check before claiming it works remotely. Keep device authorization URLs out of
   logs, screenshots, chat and Git; no persistent auth key is required. See [remote access](docs/remote-access.md).
   Exact containers, paths, volumes, backups and recovery: [docs/nas-mongodb.md](docs/nas-mongodb.md).
+- A generic MongoDB startup failure does not prove bad credentials. Inspect actual coach network membership: an expected network-mode name
+  with an empty `NetworkSettings.Networks` caused a restart loop. Restore only the existing private network attachment; preserve credentials,
+  IDs and volumes, and start Tailscale after coach health. Do not reset passwords based on the generic error alone. See the recovery runbook.
 
 ## Validation and reusable guidance
 

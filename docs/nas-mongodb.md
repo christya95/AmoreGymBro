@@ -24,9 +24,8 @@ The coach connects directly to MongoDB over the private Docker network. This was
 For intentional recreation, run the existing launcher **on the NAS**:
 
 ```bash
-cd /home/Joss/AmoreGymBro
-./start-mongodb.sh
-./start-coach.sh
+sudo /home/Joss/AmoreGymBro/start-mongodb.sh
+sudo /home/Joss/AmoreGymBro/start-coach.sh
 ```
 
 Both use the protected project service-account token and official CLI to resolve only required 1Password references. `start-coach.sh` loads the coach and Tailscale overlay with `.env.coach`, recreating both containers together; it joins the existing external database network and does not recreate MongoDB. Its source template is `deploy/start-nas-coach.sh`. Source lives in `source/`; image `amoregymbro-coach:local` was built on the NAS. Repository templates are `deploy/nas-coach.compose.yml`, `deploy/nas-tailscale.compose.yml` and `deploy/nas-mongodb.compose.yml`. Keep their shared network and explicit volume names stable.
@@ -41,7 +40,30 @@ docker inspect --format '{{.State.Health.Status}}' amoregymbro-nas-coach-1
 docker start amoregymbro-nas-tailscale-1
 ```
 
-The app's health check verifies database access. Wait for healthy, then check existing records and private HTTPS. A replacement coach requires sidecar recreation through the launcher, not just a restart. Restarting `amoregymbro-nas-mongodb-1` preserves its volume too. Do not print full container inspection or resolved Compose configuration: they include credentials. These commands require NAS management access, not normal phone use.
+The app's health check verifies database access. Wait for healthy, then check existing records and private HTTPS. A replacement coach requires sidecar recreation through the launcher, not just a restart. Restarting `amoregymbro-nas-mongodb-1` preserves its volume too. Docker commands require administrator permission; use `sudo` when needed. Do not print full container inspection or resolved Compose configuration: they include credentials. These commands require NAS management access, not normal phone use.
+
+### Coach restarting and Tailscale stopped
+
+The startup message “MongoDB is unavailable or authentication failed” also covers connection failures. Check network membership before changing credentials. `HostConfig.NetworkMode` can name the expected network while `NetworkSettings.Networks` is empty.
+
+In the 1 November recovery, the coach had lost its attachment to `amoregymbro-nas_default`. MongoDB, its records and existing credentials were intact. Reattaching the existing coach restored LAN access; starting its existing Tailscale helper restored private HTTPS. What detached the network was not established.
+
+Inspect only safe fields:
+
+```bash
+sudo docker inspect --format '{{json .NetworkSettings.Networks}}' amoregymbro-nas-coach-1
+sudo docker network inspect amoregymbro-nas_default --format '{{range .Containers}}{{.Name}} {{end}}'
+```
+
+Only when the coach's expected attachment is missing and MongoDB is on that existing network, stop the helper/coach, reconnect, and start the coach:
+
+```bash
+sudo docker stop amoregymbro-nas-tailscale-1 amoregymbro-nas-coach-1
+sudo docker network connect --alias coach amoregymbro-nas_default amoregymbro-nas-coach-1
+sudo docker start amoregymbro-nas-coach-1
+```
+
+Wait for coach health, then start `amoregymbro-nas-tailscale-1` and verify both app addresses. Preserve the existing container IDs, volumes and passwords. If the network itself is missing, stop and investigate; do not create a replacement database/network blindly. This recovery did not include a NAS reboot or a subsequent ordinary-restart test.
 
 ## 🚇 Private tunnel and SSH
 
